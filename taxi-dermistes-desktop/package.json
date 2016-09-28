@@ -1,0 +1,18 @@
+{
+  "name": "taxi-dermistes-desktop",
+  "version": "1.0.0",
+  "description": "Reservation de taxis (desktop)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taxi",
+    "desktop"
+  ],
+  "author": "Florian Choiselle, Christopher Goodman",
+  "license": "ISC",
+  "dependencies": {
+    "tracer": "^0.8.3"
+  }
+}
