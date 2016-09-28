@@ -1,0 +1,18 @@
+{
+  "name": "taxi-dermistes-web",
+  "version": "1.0.0",
+  "description": "Reservation de taxis (web)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taxi",
+    "web"
+  ],
+  "author": "Florian Choiselle, Christopher Goodman",
+  "license": "ISC",
+  "dependencies": {
+    "tracer": "^0.8.3"
+  }
+}
