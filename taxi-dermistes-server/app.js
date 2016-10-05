@@ -26,12 +26,14 @@ app.post('/', function(req,res){
 });
 
 app.get('/clients/:client_id', function(req, res){
-        fs.readFile('clients.json', 'utf8', function (err,data) {
-  	if (err) {
-    		return console.log(err);
-  	}
-  	res.send(data);
-	});
+        var listeUser = require('./clients.json');
+        var output ="";
+        for(index in listeUser) {
+                if(listeUser[index].client_id==req.params["client_id"]){
+                        output+=("id: "+listeUser[index].client_id+", nom: "+listeUser[index].client_name)+"<br/>";
+                }
+        }
+        res.send(output);
 });
 
 app.post('/clients', function(req, res){	app.use(bodyParser.json());
@@ -46,7 +48,7 @@ app.post('/clients', function(req, res){	app.use(bodyParser.json());
 app.get('/clients', function(req, res) {
 	var listeUser = require('./clients.json');
 	var output ="";
-	for(index in listeUser) {
+	for(index in listeUser){
 		output+=("id: "+listeUser[index].client_id+", nom: "+listeUser[index].client_name)+"<br/>";
 	}
 	res.send(output);
