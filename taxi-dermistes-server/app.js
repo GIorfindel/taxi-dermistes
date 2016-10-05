@@ -33,15 +33,17 @@ app.get('/clients/:client_id', function(req, res){
                         output+=("id: "+listeUser[index].client_id+", nom: "+listeUser[index].client_name)+"<br/>";
                 }
         }
+	console.log(listeUser.length);
         res.send(output);
 });
 
 app.post('/clients', function(req, res){	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: false }));
 	var obj = require('./clients.json');
+	req.body.client_id=obj.length;
 	obj.push(req.body);
 	fs.writeFile('clients.json', '', function(){console.log('done')})
-   fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
+   	fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
   	if (err) throw err;
   	console.log('It\'s saved!');
 	});
