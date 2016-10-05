@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 const fs = require('fs');
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', function(req, res){
 	res.send("racine")
@@ -31,12 +34,13 @@ app.get('/clients/:client_id', function(req, res){
 	});
 });
 
-app.post('/clients/:client_id,:client_name', function(req, res){
-        fs.appendFile('clients.json', JSON.stringify(req.params)+"\n", (err) => {
+app.post('/clients', function(req, res){	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({ extended: false }));
+        fs.appendFile('clients.json', JSON.stringify(req.body)+"\n", (err) => {
   	if (err) throw err;
   	console.log('It\'s saved!');
 	});
-	res.send('done');
+	console.log(req.body);
 });
 
 
