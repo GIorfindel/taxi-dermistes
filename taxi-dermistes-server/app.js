@@ -37,8 +37,7 @@ app.get('/clients/:client_id', function(req, res){
         res.send(output);
 });
 
-app.post('/clients', function(req, res){	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({ extended: false }));
+app.post('/clients', function(req, res){
 	var obj = require('./clients.json');
 	req.body.client_id=obj.length;
 	obj.push(req.body);
@@ -49,6 +48,24 @@ app.post('/clients', function(req, res){	app.use(bodyParser.json());
 	});
 	res.send("done");
 });
+
+app.delete('/clients', function(req, res){
+        var obj = require('./clients.json');
+        for(index in obj) {
+		console.log(obj[index].client_id);
+		console.log(req.body["client_id"]);
+        	if(obj[index].client_id==req.body["client_id"]){
+                        obj.splice(index,1);
+                }
+        }
+        fs.writeFile('clients.json', '', function(){console.log('done')})
+        fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
+        if (err) throw err;
+        console.log('It\'s saved!');
+        });
+        res.send("done");
+});
+
 
 app.get('/clients', function(req, res) {
 	var listeUser = require('./clients.json');
