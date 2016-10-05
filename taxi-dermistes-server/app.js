@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+const fs = require('fs');
 
 app.get('/', function(req, res){
 	res.send("racine")
@@ -26,7 +27,11 @@ app.get('/clients/:client_id', function(req, res){
 });
 
 app.post('/clients/:client_id', function(req, res){
-        res.send("post client")
+        fs.appendFile('clients.json', JSON.stringify(req.params), (err) => {
+  	if (err) throw err;
+  	console.log('It\'s saved!');
+	});
+	res.send('done');
 });
 
 
