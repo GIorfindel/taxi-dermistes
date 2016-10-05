@@ -21,6 +21,15 @@ app.post('/', function(req,res){
 	res.send("racine post")
 });
 
+app.get('/clients/:client_id', function(req, res){
+        res.send(req.params)
+});
+
+app.post('/clients/:client_id', function(req, res){
+        res.send("post client")
+});
+
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
