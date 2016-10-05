@@ -40,7 +40,7 @@ app.post('/clients', function(req, res){	app.use(bodyParser.json());
   	if (err) throw err;
   	console.log('It\'s saved!');
 	});
-	console.log(req.body);
+	res.send("done");
 });
 
 
