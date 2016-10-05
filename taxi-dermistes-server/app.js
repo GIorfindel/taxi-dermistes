@@ -23,11 +23,16 @@ app.post('/', function(req,res){
 });
 
 app.get('/clients/:client_id', function(req, res){
-        res.send(req.params)
+        fs.readFile('clients.json', 'utf8', function (err,data) {
+  	if (err) {
+    		return console.log(err);
+  	}
+  	res.send(data);
+	});
 });
 
-app.post('/clients/:client_id', function(req, res){
-        fs.appendFile('clients.json', JSON.stringify(req.params), (err) => {
+app.post('/clients/:client_id,:client_name', function(req, res){
+        fs.appendFile('clients.json', JSON.stringify(req.params)+"\n", (err) => {
   	if (err) throw err;
   	console.log('It\'s saved!');
 	});
