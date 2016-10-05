@@ -10,11 +10,11 @@ app.get('/~', function(req, res){
 });
 
 app.get('/image', function(req, res){
-        res.sendFile("/export/home/users/master/master2/m2pls2017/11200452/git/JSAU/taxi-dermistes-server/files/image.png")
+        res.sendFile("image.png",{ root: "./files" })
 });
 
 app.get('/page', function(req, res){
-        res.sendFile("/export/home/users/master/master2/m2pls2017/11200452/git/JSAU/taxi-dermistes-server/files/page.html")
+        res.sendFile("page.html",{ root: "./files" })
 });
 
 app.post('/', function(req,res){
