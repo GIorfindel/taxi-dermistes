@@ -38,7 +38,10 @@ app.get('/clients/:client_id', function(req, res){
 
 app.post('/clients', function(req, res){	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: false }));
-        fs.appendFile('clients.json', JSON.stringify(req.body)+"\n", (err) => {
+	var obj = require('./clients.json');
+	obj.push(req.body);
+	fs.writeFile('clients.json', '', function(){console.log('done')})
+   fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
   	if (err) throw err;
   	console.log('It\'s saved!');
 	});
@@ -52,6 +55,12 @@ app.get('/clients', function(req, res) {
 		output+=("id: "+listeUser[index].client_id+", nom: "+listeUser[index].client_name)+"<br/>";
 	}
 	res.send(output);
+	
+	
+	obj.push({id: 1, square:2});
+	var json = JSON.stringify(obj);
+	console.log(json);
+	
 });
 
 
