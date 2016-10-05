@@ -43,6 +43,15 @@ app.post('/clients', function(req, res){	app.use(bodyParser.json());
 	res.send("done");
 });
 
+app.get('/clients', function(req, res) {
+	var listeUser = require('./clients.json');
+	var output ="";
+	for(index in listeUser) {
+		output+=("id: "+listeUser[index].client_id+", nom: "+listeUser[index].client_name)+"<br/>";
+	}
+	res.send(output);
+});
+
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
