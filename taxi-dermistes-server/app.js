@@ -27,14 +27,16 @@ app.post('/', function(req,res){
 
 app.get('/clients/:client_id', function(req, res){
         var listeUser = require('./clients.json');
-        var output ="";
+        var exists = false;
         for(index in listeUser) {
                 if(listeUser[index].client_id==req.params["client_id"]){
-                        output+=("id: "+listeUser[index].client_id+", nom: "+listeUser[index].client_name)+"<br/>";
+					res.send(listeUser[index]);
+					exists=true;
                 }
         }
-	console.log(listeUser.length);
-        res.send(output);
+		console.log(listeUser.length);
+		if(!exists)
+			res.send({"error":"404"});
 });
 
 app.post('/clients', function(req, res){
