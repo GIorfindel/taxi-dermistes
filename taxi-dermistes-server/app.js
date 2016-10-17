@@ -47,22 +47,28 @@ app.get('/clients/:client_id', function(req, res){
         var exists = false;
         for(index in listeUser) {
                 if(listeUser[index].client_id==req.params["client_id"]){
+                	res.status(200); // Envoi le code HTTP 200 : OK
 					res.send(listeUser[index]);
 					exists=true;
                 }
         }
 		if(!exists) {
-			res.send({"error":"404"});
+			res.status(404);
+			res.send({"error":"Client inexistant"});
 			logger.warn("Requête de client inexistant");
 		}
 });
 
 app.get('/clients', function(req, res) {
 	var listeUser = require('./clients.json');
-	if(listeUser.length > 0)
+	if(listeUser.length > 0) {
+		res.status(200);
 		res.send(listeUser);
-	else
+	}
+	else {
+		res.status(404);
 		res.send({"error":"Aucun client trouvé"});
+	}
 	logger.trace("Nombre de clients : %d",listeUser.length);
 });
 
@@ -76,6 +82,7 @@ app.post('/clients', function(req, res){
   	if (err) throw err;
   	logger.trace("Client ajouté !");
 	});
+	res.status(201); // 201 == Created
 	res.send({"status": "success"});
 });
 
