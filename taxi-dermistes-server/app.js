@@ -7,8 +7,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
+//PORT DU SERVEUR
 const port = 3000;
 
+
+/****************************************************/
+/*					ESSAIS    						*/
+/****************************************************/
 app.get('/', function(req, res){
 	res.send("racine")
 });
@@ -55,7 +60,7 @@ app.get('/clients/:client_id', function(req, res){
 		if(!exists) {
 			res.status(404);
 			res.send({"error":"Client inexistant"});
-			logger.warn("Requête de client inexistant");
+			logger.warn("Impossible d'afficher le client %d", req.params["client_id"]);
 		}
 });
 
@@ -80,31 +85,99 @@ app.post('/clients', function(req, res){
 	obj.libre=obj.libre+1;
 	fs.writeFile('clients.json', '')
    	fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
-  	if (err) throw err;
-  	logger.trace("Client ajouté !");
+  		if (err) {
+  			logger.error(err);
+  			res.status(500);
+  			res.send({"error":"Impossible de traiter la requête"});
+  		}
+  		else {
+	  		logger.trace("Client ajouté avec l'id %d", (obj.libre-1));
+	  		res.status(201); // 201 == Created
+			res.send({"status": "success"});
+	  	}
 	});
-	res.status(201); // 201 == Created
-	res.send({"status": "success"});
+	
 });
 
 /************** DELETE **************/
 app.delete('/clients', function(req, res){
         var obj = require('./clients.json');
+        var exists = false;
         for(index in obj.clients) {
-		console.log(obj.clients[index].client_id);
-		console.log(req.body["client_id"]);
         	if(obj.clients[index].client_id==req.body["client_id"]){
-                        obj.clients.splice(index,1);
-                }
+        		exists = true;
+             	obj.clients.splice(index,1);
+            }
         }
-        fs.writeFile('clients.json', '', function(){console.log('done')})
-        fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
-        if (err) throw err;
-        console.log('It\'s saved!');
-        });
-        res.send("done");
+        if(exists) {
+		    fs.writeFile('clients.json', '')
+		    fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
+		    	if (err) {
+		  			logger.error(err);
+		  			res.status(500);
+		  			res.send({"error":"Impossible de traiter la requête"});
+		  		}
+		  		else {
+		    		logger.trace("Client %d supprimé", req.body["client_id"]);
+		    		res.status(200);
+					res.send({"status": "success"});
+				}
+		    });
+		}
+		else {
+			logger.warn("Impossible de supprimer le client %d", req.body["client_id"]);
+		  	res.status(404);
+		  	res.send({"error":"Client inexistant"});
+		}
 });
 
 /************** PUT **************/
+app.put('/clients', function(req, res){
+        var obj = require('./clients.json');
+        var exists = false;
+        for(index in obj.clients) {
+        	if(obj.clients[index].client_id==req.body["client_id"]){
+        		exists = true;
+             	obj.clients[index].client_name=req.body["client_name"];
+            }
+        }
+        if(exists) {
+		    fs.writeFile('clients.json', '')
+		    fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
+		    	if (err) {
+		  			logger.error(err);
+		  			res.status(500);
+		  			res.send({"error":"Impossible de traiter la requête"});
+		  		}
+		  		else {
+		    		logger.trace("Client %d modifié", req.body["client_id"]);
+		    		res.status(200);
+					res.send({"status": "success"});
+				}
+		    });
+		}
+		else {
+			logger.warn("Impossible de modifier le client %d", req.body["client_id"]);
+		  	res.status(404);
+		  	res.send({"error":"Client inexistant"});
+		}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
