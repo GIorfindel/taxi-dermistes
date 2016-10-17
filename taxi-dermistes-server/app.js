@@ -12,6 +12,14 @@ const port = 3000;
 
 
 /****************************************************/
+/*				DEMARRAGE SERVEUR					*/
+/****************************************************/
+app.listen(port, function () {
+  logger.info('taxi-dermistes-server écoute sur le port %d', port);
+});
+
+
+/****************************************************/
 /*					ESSAIS    						*/
 /****************************************************/
 app.get('/', function(req, res){
@@ -35,12 +43,6 @@ app.post('/', function(req,res){
 });
 
 
-/****************************************************/
-/*				DEMARRAGE SERVEUR					*/
-/****************************************************/
-app.listen(port, function () {
-  logger.info('taxi-dermistes-server écoute sur le port %d', port);
-});
 
 /****************************************************/
 /*				CRUD CLIENT							*/
