@@ -75,11 +75,6 @@ app.get('/clients', function(req, res) {
 	}
 	res.send(output);
 	
-	
-	obj.push({id: 1, square:2});
-	var json = JSON.stringify(obj);
-	console.log(json);
-	
 });
 
 
