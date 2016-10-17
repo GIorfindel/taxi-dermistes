@@ -1,9 +1,13 @@
 var express = require('express');
 var app = express();
+var logger = require('tracer').colorConsole();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+
+const port = 3000;
 
 app.get('/', function(req, res){
 	res.send("racine")
@@ -25,6 +29,19 @@ app.post('/', function(req,res){
 	res.send("racine post")
 });
 
+
+/****************************************************/
+/*				DEMARRAGE SERVEUR					*/
+/****************************************************/
+app.listen(port, function () {
+  logger.info('taxi-dermistes-server écoute sur le port %d', port);
+});
+
+/****************************************************/
+/*				CRUD CLIENT							*/
+/****************************************************/
+
+/************** GET **************/
 app.get('/clients/:client_id', function(req, res){
         var listeUser = require('./clients.json');
         var exists = false;
@@ -34,23 +51,35 @@ app.get('/clients/:client_id', function(req, res){
 					exists=true;
                 }
         }
-		console.log(listeUser.length);
-		if(!exists)
+		if(!exists) {
 			res.send({"error":"404"});
+			logger.warn("Requête de client inexistant");
+		}
 });
 
+app.get('/clients', function(req, res) {
+	var listeUser = require('./clients.json');
+	if(listeUser.length > 0)
+		res.send(listeUser);
+	else
+		res.send({"error":"Aucun client trouvé"});
+	logger.trace("Nombre de clients : %d",listeUser.length);
+});
+
+/************** POST **************/
 app.post('/clients', function(req, res){
 	var obj = require('./clients.json');
 	req.body.client_id=obj.length;
 	obj.push(req.body);
-	fs.writeFile('clients.json', '', function(){console.log('done')})
+	fs.writeFile('clients.json', '')
    	fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
   	if (err) throw err;
-  	console.log('It\'s saved!');
+  	logger.trace("Client ajouté !");
 	});
-	res.send("done");
+	res.send({"status": "success"});
 });
 
+/************** DELETE **************/
 app.delete('/clients', function(req, res){
         var obj = require('./clients.json');
         for(index in obj) {
@@ -68,19 +97,6 @@ app.delete('/clients', function(req, res){
         res.send("done");
 });
 
+/************** PUT **************/
 
-app.get('/clients', function(req, res) {
-	var listeUser = require('./clients.json');
-	var output ="";
-	for(index in listeUser){
-		output+=("id: "+listeUser[index].client_id+", nom: "+listeUser[index].client_name)+"<br/>";
-	}
-	res.send(output);
-	
-});
-
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
-});
 
