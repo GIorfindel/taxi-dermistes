@@ -45,10 +45,10 @@ app.listen(port, function () {
 app.get('/clients/:client_id', function(req, res){
         var listeUser = require('./clients.json');
         var exists = false;
-        for(index in listeUser) {
-                if(listeUser[index].client_id==req.params["client_id"]){
+        for(index in listeUser.clients) {
+                if(listeUser.clients[index].client_id==req.params["client_id"]){
                 	res.status(200); // Envoi le code HTTP 200 : OK
-					res.send(listeUser[index]);
+					res.send(listeUser.clients[index]);
 					exists=true;
                 }
         }
@@ -61,22 +61,23 @@ app.get('/clients/:client_id', function(req, res){
 
 app.get('/clients', function(req, res) {
 	var listeUser = require('./clients.json');
-	if(listeUser.length > 0) {
+	if(listeUser.clients.length > 0) {
 		res.status(200);
-		res.send(listeUser);
+		res.send(listeUser.clients);
 	}
 	else {
 		res.status(404);
 		res.send({"error":"Aucun client trouvé"});
 	}
-	logger.trace("Nombre de clients : %d",listeUser.length);
+	logger.trace("Nombre de clients : %d",listeUser.clients.length);
 });
 
 /************** POST **************/
 app.post('/clients', function(req, res){
 	var obj = require('./clients.json');
-	req.body.client_id=obj.length;
-	obj.push(req.body);
+	req.body.client_id=obj.libre;
+	obj.clients.push(req.body);
+	obj.libre=obj.libre+1;
 	fs.writeFile('clients.json', '')
    	fs.appendFile('clients.json', JSON.stringify(obj)+"\n", (err) => {
   	if (err) throw err;
@@ -89,11 +90,11 @@ app.post('/clients', function(req, res){
 /************** DELETE **************/
 app.delete('/clients', function(req, res){
         var obj = require('./clients.json');
-        for(index in obj) {
-		console.log(obj[index].client_id);
+        for(index in obj.clients) {
+		console.log(obj.clients[index].client_id);
 		console.log(req.body["client_id"]);
-        	if(obj[index].client_id==req.body["client_id"]){
-                        obj.splice(index,1);
+        	if(obj.clients[index].client_id==req.body["client_id"]){
+                        obj.clients.splice(index,1);
                 }
         }
         fs.writeFile('clients.json', '', function(){console.log('done')})
