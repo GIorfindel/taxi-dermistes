@@ -1,1 +1,1 @@
-{"libre":2,"clients":[{"client_id":0,"client_name":"tata"}]}
+{"libre":3,"clients":[{"client_name":"test","client_mail":"test@hotmail.fr","client_id":0},{"client_name":"test2","client_mail":"test2@hotmail.fr","client_id":1},{"client_name":"test3","client_mail":"test3@gmail.com","client_id":2}]}
