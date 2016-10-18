@@ -52,7 +52,11 @@ app.post('/', function(req,res){
 
 /************** GET **************/
 app.get('/clients/:client_id', function(req, res){
-        let listeUser = require('./clients.json');
+  let listeUser
+        fs.readFile('./clients.json', 'utf8', function(err, data) {
+          if (err) throw err;
+          listeUser = JSON.parse(data);
+        //let listeUser = require('./clients.json');
         let exists = false;
         for(index in listeUser.clients) {
                 if(listeUser.clients[index].client_id==req.params["client_id"]){
@@ -66,11 +70,16 @@ app.get('/clients/:client_id', function(req, res){
 			res.send({"error":"Client inexistant"});
 			logger.warn("Impossible d'afficher le client %d", req.params["client_id"]);
 		}
+    });
 });
 
 app.get('/clients', function(req, res) {
-	let listeUser = require('./clients.json');
-	if(listeUser.clients.length > 0) {
+  let listeUser;
+  fs.readFile('./clients.json', 'utf8', function (err, data) {
+    if (err) throw err;
+    listeUser = JSON.parse(data);
+	//let listeUser = require('./clients.json');
+	if(listeUser["clients"].length > 0) {
 		res.status(200);
 		res.send(listeUser.clients);
 	}
@@ -79,11 +88,17 @@ app.get('/clients', function(req, res) {
 		res.send({"error":"Aucun client trouvé"});
 	}
 	logger.trace("Nombre de clients : %d",listeUser.clients.length);
+  });
 });
 
 /************** POST **************/
 app.post('/clients', function(req, res){
-	let obj = require('./clients.json');
+  let obj;
+  fs.readFile('./clients.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    obj = JSON.parse(data);
+	//let obj = require('./clients.json');
+  logger.trace(req.body.client_mail);
   if ((req.body.client_mail==null) || (validator.isEmail(req.body.client_mail) == false))
   {
     res.status(400); //Bad Request
@@ -107,11 +122,16 @@ app.post('/clients', function(req, res){
   	  	}
   	});
   }
+  });
 });
 
 /************** DELETE **************/
 app.delete('/clients', function(req, res){
-        let obj = require('./clients.json');
+  let obj;
+  fs.readFile('./clients.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    obj = JSON.parse(data);
+        //let obj = require('./clients.json');
         let exists = false;
         for(index in obj.clients) {
         	if(obj.clients[index].client_id==req.body["client_id"]){
@@ -139,11 +159,15 @@ app.delete('/clients', function(req, res){
 		  	res.status(404);
 		  	res.send({"error":"Client inexistant"});
 		}
+    });
 });
 
 /************** PUT **************/
 app.put('/clients', function(req, res){
-        let obj = require('./clients.json');
+  fs.readFile('./clients.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    obj = JSON.parse(data);
+        //let obj = require('./clients.json');
         if ((req.body.client_mail==null) || (validator.isEmail(req.body.client_mail) == false))
         {
           res.status(400); //Bad Request
@@ -154,7 +178,8 @@ app.put('/clients', function(req, res){
           for(index in obj.clients) {
           	if(obj.clients[index].client_id==req.body["client_id"]){
           		exists = true;
-               	obj.clients[index].client_name=req.body["client_name"];
+              obj.clients[index].client_name=req.body["client_name"];
+              obj.clients[index].client_mail=req.body["client_mail"];
               }
           }
           if(exists) {
@@ -178,4 +203,5 @@ app.put('/clients', function(req, res){
   		  	res.send({"error":"Client inexistant"});
   		}
   }
+  });
 });
