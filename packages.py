@@ -10,3 +10,5 @@ os.system('npm install browserify --save-dev')
 
 os.chdir('../taxi-dermistes-web')
 os.system('npm install express-http-proxy --save')
+os.system('npm install express-http-proxy --save')
+os.system('npm install express --save')
