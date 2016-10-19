@@ -10,9 +10,14 @@
 <body>
   <section>
     <header><h3>Ajouter un utilisateur</h3></header>
-    <form method="post" action="">
+    <form id="creer" method="post" action="">
       <p><input type="text" name="client_name"/></p>
       <p><input type="email" name="client_email"/></p>
+      <p><button type="button" name="submitForm">Envoyer</button></p>
+    </form>
+    <header><h3>Chercher un utilisateur</h3></header>
+    <form id="chercher" method="get" action="">
+      <p><input type="text" name="client_id"/></p>
       <p><button type="button" name="submitForm">Envoyer</button></p>
     </form>
   </section>

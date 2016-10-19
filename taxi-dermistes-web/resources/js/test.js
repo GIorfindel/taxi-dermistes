@@ -5,7 +5,7 @@ window.onload = function() { // Attend que la page termine de charger
         $("#res").text(res);
     }
 
-    $('form').on("click", "button", function(e) {
+    $('#creer').on("click", "button", function(e) {
         e.preventDefault();
         var email = $("input[name='client_email']").val();
         var name = $("input[name='client_name']").val();
@@ -30,5 +30,19 @@ window.onload = function() { // Attend que la page termine de charger
                 }
             });
         }
-    })
+    });
+    $('#chercher').on("click", "button", function(e) {
+        var client_id = parseInt($("#chercher :input").val())
+        e.preventDefault();
+        //$.getJSON("http://localhost:3000/clients", req, function(data) {
+        //    $("#res").text(JSON.stringify(data));
+        //});
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: "http://localhost:8080/api/clients/"+client_id,
+            success: function(response){$("#res").text(JSON.stringify(response))}
+        });
+
+    });
 }
