@@ -4,7 +4,12 @@
   "description": "Reservation de taxis (web)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./app.js",
+    "build": "npm run build:js",
+    "build:js": "browserify ui.js > resource/js/bundle.js",
+    "test": "npm run lint",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "keywords": [
     "taxi",
@@ -13,6 +18,16 @@
   "author": "Florian Choiselle, Christopher Goodman",
   "license": "ISC",
   "dependencies": {
-    "tracer": "^0.8.3"
+    "express": "4.14.0",
+    "express-http-proxy": "0.10.0",
+    "jquery": "3.1.1",
+    "morgan": "1.7.0",
+    "tracer": "0.8.3",
+    "validator": "6.1.0"
+  },
+  "devDependencies": {
+    "browserify": "13.1.1",
+    "eslint": "3.8.1",
+    "eslint-config-usecases": "1.0.4"
   }
 }
