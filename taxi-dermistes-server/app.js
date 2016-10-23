@@ -70,14 +70,15 @@ app.get('/clients/:client_id', (req, res) => {
         for (let index in listeUser.clients) {
             if (listeUser.clients[index].client_id == req.params['client_id']) {
                 res.status(200) // Envoi le code HTTP 200 : OK
-                res.send(listeUser.clients[index])
+                res.json(listeUser.clients[index])
                 exists = true
             }
         }
         if (!exists) {
             res.status(404)
-            res.send({
-                error: 'Client inexistant'
+            res.json({
+                error: 'notFound',
+                message: 'Client inexistant'
             })
             logger.warn("Impossible d'afficher le client %d", req.params['client_id'])
         }
@@ -98,7 +99,8 @@ app.get('/clients', (req, res) => {
         } else {
             res.status(404)
             res.send({
-                error: 'Aucun client trouvé'
+                error: 'notFound',
+                message: 'Aucun client trouvé'
             })
         }
         logger.trace('Nombre de clients : %d', listeUser.clients.length)
@@ -115,31 +117,44 @@ app.post('/clients', (req, res) => {
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
         logger.trace(req.body.client_mail)
-        if ((req.body.client_mail == null) || (validator.isEmail(req.body.client_mail) == false)) {
-            res.status(400) //Bad Request
-            res.send({
-                error: "Votre adresse mail n'est pas valide"
-            })
-        } else {
-            req.body.client_id = obj.libre
-            obj.clients.push(req.body)
-            obj.libre = obj.libre + 1
-            fs.writeFile('clients.json', '')
-            fs.appendFile('clients.json', JSON.stringify(obj) + '\n', (err) => {
-                if (err) {
-                    logger.error(err)
-                    res.status(500)
-                    res.send({
-                        error: 'Impossible de traiter la requête'
-                    })
-                } else {
-                    logger.trace("Client ajouté avec l'id %d", (obj.libre - 1))
-                    res.status(201) // 201 == Created
-                    res.send({
-                        status: 'success'
-                    })
-                }
-            })
+        if ((req.body.client_mail == null) || (req.body.client_name == null) || validator.isEmpty(req.body.client_mail) || validator.isEmpty(req.body.client_name)) {
+        	res.status(400) //Bad Request
+	        res.send({
+	        	error: "invalidRequest",
+	            message: "Requête invalide"
+	        })
+        }
+        else {
+		    if(validator.isEmail(req.body.client_mail) == false) {
+		        res.status(400) //Bad Request
+		        res.send({
+		        	error: "invalidEmail",
+		            message: "L'adresse mail est invalide"
+		        })
+		    } 
+		    else {
+		        req.body.client_id = obj.libre
+		        obj.clients.push(req.body)
+		        obj.libre = obj.libre + 1
+		        fs.writeFile('clients.json', '')
+		        fs.appendFile('clients.json', JSON.stringify(obj) + '\n', (err) => {
+		            if (err) {
+		                logger.error(err)
+		                res.status(500)
+		                res.send({
+		                	error:"internalError",
+		                    message: 'Impossible de traiter la requête'
+		                })
+		            } else {
+		                logger.trace("Client ajouté avec l'id %d", (req.body.client_id))
+		                res.status(201) // 201 == Created
+		                res.location('/clients/'+ req.body.client_id) // Je vois pas l'intérêt mais c'est dans la spécification REST
+		                res.send({
+		                    status: 'success'
+		                })
+		            }
+		        })
+		    }
         }
     })
 })
@@ -167,7 +182,8 @@ app.delete('/clients', (req, res) => {
                     logger.error(err)
                     res.status(500)
                     res.send({
-                        error: 'Impossible de traiter la requête'
+	                    error:"internalError",
+                        message: 'Impossible de traiter la requête'
                     })
                 } else {
                     logger.trace('Client %d supprimé', req.body['client_id'])
@@ -181,7 +197,8 @@ app.delete('/clients', (req, res) => {
             logger.warn('Impossible de supprimer le client %d', req.body['client_id'])
             res.status(404)
             res.send({
-                error: 'Client inexistant'
+            	error:"notFound",
+                message: 'Client inexistant'
             })
         }
     })
@@ -199,7 +216,8 @@ app.put('/clients', (req, res) => {
         if ((req.body.client_mail == null) || (validator.isEmail(req.body.client_mail) == false)) {
             res.status(400) //Bad Request
             res.send({
-                error: "Votre adresse mail n'est pas valide"
+            	error:"invalidEmail",
+                message: "Votre adresse mail n'est pas valide"
             })
         } else {
             let exists = false
@@ -217,7 +235,8 @@ app.put('/clients', (req, res) => {
                         logger.error(err)
                         res.status(500)
                         res.send({
-                            error: 'Impossible de traiter la requête'
+                        	error:"internalError",
+                            message: 'Impossible de traiter la requête'
                         })
                     } else {
                         logger.trace('Client %d modifié', req.body['client_id'])
@@ -231,7 +250,8 @@ app.put('/clients', (req, res) => {
                 logger.warn('Impossible de modifier le client %d', req.body['client_id'])
                 res.status(404)
                 res.send({
-                    error: 'Client inexistant'
+                	error:"notFound",
+                    message: 'Client inexistant'
                 })
             }
         }

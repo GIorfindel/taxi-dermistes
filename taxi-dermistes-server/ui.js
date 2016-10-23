@@ -1,3 +1,3 @@
 'use strict'
-require('validator')
+global.validator = require('validator')
 global.$ = require('jquery')
