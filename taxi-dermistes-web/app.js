@@ -27,6 +27,32 @@ app.listen(port, () => {
     console.log('taxi-dermistes-web-server écoute sur le port %d', port)
 })
 
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/resource/index.html'))
 })
+
+app.get('/admin/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/resource/admin/index.html'))
+})
+
+app.get('/admin/clients', (req, res) => {
+    res.sendFile(path.join(__dirname, '/resource/admin/clients.html'))
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

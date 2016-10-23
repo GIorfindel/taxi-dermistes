@@ -150,7 +150,8 @@ app.post('/clients', (req, res) => {
 		                res.status(201) // 201 == Created
 		                res.location('/clients/'+ req.body.client_id) // Je vois pas l'intérêt mais c'est dans la spécification REST
 		                res.send({
-		                    status: 'success'
+		                    status: 'success',
+		                    id: req.body.client_id
 		                })
 		            }
 		        })
@@ -213,7 +214,7 @@ app.put('/clients', (req, res) => {
         }
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
-        if ((req.body.client_mail == null) || (validator.isEmail(req.body.client_mail) == false)) {
+        if (!validator.isEmpty(req.body.client_mail) && (validator.isEmail(req.body.client_mail) == false)) {
             res.status(400) //Bad Request
             res.send({
             	error:"invalidEmail",
@@ -224,8 +225,12 @@ app.put('/clients', (req, res) => {
             for (let index in obj.clients) {
                 if (obj.clients[index].client_id == req.body['client_id']) {
                     exists = true
-                    obj.clients[index].client_name = req.body['client_name']
-                    obj.clients[index].client_mail = req.body['client_mail']
+                    if(!validator.isEmpty(req.body.client_name)) {
+                    	obj.clients[index].client_name = req.body['client_name']
+                    }
+                    if(!validator.isEmpty(req.body.client_mail)) {
+                    	obj.clients[index].client_mail = req.body['client_mail']
+                    }
                 }
             }
             if (exists) {
