@@ -24,14 +24,11 @@ window.onload = function() { // Attend que la page termine de charger
         $('#res').html('')
         var tab = "<table><tr><th>id</th><th>nom</th><th>email</th></tr>";
         for (client in res) {
-            tab += "<tr>";
-            tab += "<td>" + res[client].client_id + "</td>"
-            tab += "<td>" + res[client].client_name + "</td>"
-            tab += "<td>" + res[client].client_mail + "</td>"
-            /*for (info in res[client]) {
-                tab += "<td>" + res[client][info] + "<\td>"
+            for (info in res[client]) {
+                tab = "<td>" + res[client][info] + "</td>" + tab
             }
-            tab += "</tr>"*/
+            tab = "<tr>" + tab
+            tab += "</tr>"
         }
         tab += "</table>"
         $('#res').append(tab)
