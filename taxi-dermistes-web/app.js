@@ -12,9 +12,9 @@ app.use(morgan('combined', {stream: accessLogStream}))
 app.use('/api', proxy('http://localhost:3000'))
 app.use(express.static('resource'))
 app.use('/resource', express.static('resource'))
-app.use('/resource/js', express.static(path.join(__dirname, 'resource/js')));
-app.use('/resource/css', express.static(path.join(__dirname, 'resource/css')));
-app.use('/resource/img', express.static(path.join(__dirname, 'resource/img')));
+app.use('/resource/js', express.static(path.join(__dirname, 'resource/js')))
+app.use('/resource/css', express.static(path.join(__dirname, 'resource/css')))
+app.use('/resource/img', express.static(path.join(__dirname, 'resource/img')))
 
 //PORT DU SERVEUR
 const port = 3001
@@ -39,20 +39,5 @@ app.get('/admin/', (req, res) => {
 app.get('/admin/clients', (req, res) => {
     res.sendFile(path.join(__dirname, '/resource/admin/clients.html'))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
