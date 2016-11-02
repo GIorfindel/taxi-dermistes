@@ -19,4 +19,5 @@ os.system('npm install browserify --save-dev')
 os.system('npm install morgan --save')
 os.system('npm install jquery --save')
 os.system('npm install validator --save')
+os.system('npm install nodemon --save-dev')
 
