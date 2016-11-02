@@ -1,5 +1,5 @@
 import os
-os.chdir('taxi-dermistes-server')
+os.chdir('taxi-dermistes-core')
 os.system('npm install tracer --save')
 os.system('npm install express --save')
 os.system('npm install body-parser --save')
@@ -8,7 +8,7 @@ os.system('npm install eslint --save-dev')
 os.system('npm install eslint-config-usecases --save-dev')
 os.system('npm install browserify --save-dev')
 os.system('npm install jquery --save-dev')
-
+os.system('npm install bluebird --save-dev')
 
 os.chdir('../taxi-dermistes-web')
 os.system('npm install express-http-proxy --save')
