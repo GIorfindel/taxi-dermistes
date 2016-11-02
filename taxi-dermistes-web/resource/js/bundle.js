@@ -11,32 +11,49 @@ window.onload = function() { // Attend que la page termine de charger
     }
 
     function formToJSON(form) {
-    	var unindexed_array = form.serializeArray()
+        var unindexed_array = form.serializeArray()
         var indexed_array = {}
 
         $.map(unindexed_array, (n, i) => {
-		    indexed_array[n['name']] = n['value']
+            indexed_array[n['name']] = n['value']
         })
 
         return indexed_array
     }
-    
-    function isDefined(object) {
-    	return (typeof object !== 'undefined' || object)
+
+    function afficheTab(res) {
+        $('#res').html('')
+        var tab = "<table><tr><th>id</th><th>nom</th><th>email</th></tr>";
+        for (client in res) {
+            /*for (info in res[client]) {
+                tab = "<td>" + res[client].info + "</td>" + tab
+            }
+            tab = "<tr>" + tab
+            tab += "</tr>"*/
+            tab += "<tr>";
+            tab += "<td>" + res[client].client_id + "</td>"
+            tab += "<td>" + res[client].client_name + "</td>"
+            tab += "<td>" + res[client].client_mail + "</td></tr>"
+        }
+        tab += "</table>"
+        $('#res').append(tab)
     }
-    
+
+    function isDefined(object) {
+        return (typeof object !== 'undefined' || object)
+    }
+
     function formatageJSON(objet) {
-    	var str =""
-    	
-    	if(isDefined(objet.length)) {
-			for(var i = 0; i < objet.length; i++) {
-				str+= "id : "+objet[i].client_id+", nom : "+objet[i].client_name+", email : "+objet[i].client_mail+"<br>"; 
-			}
-		}
-		else {
-			str+= "id : "+objet.client_id+", nom : "+objet.client_name+", email : "+objet.client_mail+"<br>";
-		}
-    	return str;
+        var str = ""
+
+        if (isDefined(objet.length)) {
+            for (var i = 0; i < objet.length; i++) {
+                str += "id : " + objet[i].client_id + ", nom : " + objet[i].client_name + ", email : " + objet[i].client_mail + "<br>";
+            }
+        } else {
+            str += "id : " + objet.client_id + ", nom : " + objet.client_name + ", email : " + objet.client_mail + "<br>";
+        }
+        return str;
     }
 
     $('#creer').on('submit', function(e) {
@@ -55,7 +72,7 @@ window.onload = function() { // Attend que la page termine de charger
                 data: JSON.stringify(formData),
                 success: function(res, statut) {
                     if (res.status == 'success') {
-                        afficherRes('Client ajouté. Identifiant : '+res.id)
+                        afficherRes('Client ajouté. Identifiant : ' + res.id)
                     }
                 },
                 error: function(res, statut, erreur) {
@@ -68,23 +85,23 @@ window.onload = function() { // Attend que la page termine de charger
     $('#chercher').on('submit', function(e) {
         e.preventDefault()
         var client_id = parseInt($('#chercher :input').val())
-        //$.getJSON("http://localhost:3000/clients", req, function(data) {
-        //    $("#res").text(JSON.stringify(data));
-        //});
+            //$.getJSON("http://localhost:3000/clients", req, function(data) {
+            //    $("#res").text(JSON.stringify(data));
+            //});
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: 'http://localhost:3001/api/clients/' + client_id,
             success: function(res) {
-            	console.log(res)
-            	afficherRes(formatageJSON(res))
+                console.log(res)
+                afficherRes(formatageJSON(res))
             },
             error: function(res, statut, erreur) {
-            	afficherRes('Erreur : ' + getError(res).message)
+                afficherRes('Erreur : ' + getError(res).message)
             }
         })
     })
-    
+
     $('#lister').on('submit', function(e) {
         e.preventDefault()
         $.ajax({
@@ -92,19 +109,19 @@ window.onload = function() { // Attend que la page termine de charger
             type: 'GET',
             url: 'http://localhost:3001/api/clients/',
             success: function(res) {
-            	afficherRes(formatageJSON(res))
+                afficheTab(res)
             },
             error: function(res, statut, erreur) {
-            	afficherRes('Erreur : ' + getError(res).message)
+                afficherRes('Erreur : ' + getError(res).message)
             }
         })
     })
-    
+
     $('#modifier').on('submit', function(e) {
         e.preventDefault()
 
         var formData = formToJSON($(this))
-        if (!validator.isEmpty(formData.client_mail) &&!validator.isEmail(formData.client_mail)) {
+        if (!validator.isEmpty(formData.client_mail) && !validator.isEmail(formData.client_mail)) {
             afficherRes('Adresse email incorrecte')
         } else {
 
@@ -125,7 +142,7 @@ window.onload = function() { // Attend que la page termine de charger
             })
         }
     })
-    
+
     $('#supprimer').on('submit', function(e) {
         e.preventDefault()
 
@@ -146,27 +163,15 @@ window.onload = function() { // Attend que la page termine de charger
             }
         })
     })
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
 }
 
 },{}],2:[function(require,module,exports){
