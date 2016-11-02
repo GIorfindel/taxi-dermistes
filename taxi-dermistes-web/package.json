@@ -4,9 +4,10 @@
   "description": "Reservation de taxis (web)",
   "main": "index.js",
   "scripts": {
-    "start": "node ./app.js",
+    "start": "node src/app.js",
+    "start:watch": "nodemon",
     "build": "npm run build:js",
-    "build:js": "browserify ui.js > resource/js/bundle.js",
+    "build:js": "browserify src/ui.js > src/resource/js/bundle.js",
     "test": "npm run lint",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
@@ -27,7 +28,9 @@
   },
   "devDependencies": {
     "browserify": "13.1.1",
+    "chokidar-cli": "1.2.0",
     "eslint": "3.8.1",
-    "eslint-config-usecases": "1.0.4"
+    "eslint-config-usecases": "1.0.4",
+    "nodemon": "1.11.0"
   }
 }

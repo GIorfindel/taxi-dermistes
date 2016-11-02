@@ -111,7 +111,7 @@ window.onload = function() { // Attend que la page termine de charger
                 afficheTab(res)
             },
             error: function(res, statut, erreur) {
-                afficherRes('Erreur : ' + getError(res).message)
+                ('Erreur : ' + getError(res).message)
             }
         })
     })
