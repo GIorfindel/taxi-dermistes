@@ -1,0 +1,11 @@
+{
+ "verbose": true,
+  "events": {
+    "exit": "npm run build"
+  },
+ "cwd": "__dirname",
+ "ext": "js json njk",
+ "watch": ["src"],
+ "delay": 1000,
+ "ignore": ["resource"]
+}
