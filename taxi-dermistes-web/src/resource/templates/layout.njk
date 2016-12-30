@@ -1,0 +1,31 @@
+<!-- layout.njk -->
+
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" type="text/css" href="/resource/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+    </head>
+
+    <body>
+
+        {% include "templates/navbar.html" %}
+
+        <div class="container" id="main">
+
+            <!-- You write code for this content block in another file -->
+            {% block content %}{% endblock %}
+
+        </div>
+
+        <footer>
+            <div class="container">
+                <p class="text-muted">Taxi-Dermistes par Florian Choiselle et Christopher Goodman, 2016-2017</p>
+            </div>
+        </footer>
+
+        <script src="/resource/js/bundle.js"></script>
+    </body>
+</html>

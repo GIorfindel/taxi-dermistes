@@ -1,19 +1,9 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <title>Taxi-Dermistes</title>
-  <link rel="stylesheet" href="/resource/css/style.css">
-  <script src="/resource/js/bundle.js"></script>
-</head>
-<body>
+{% set title = 'Administration' %} {% extends "templates/layout.njk" %}
 
-	<section>
-		<header><h3>Espace admin</h3></header>
-		<a href="/admin/clients">Gestion des clients</a>
-	</section>
-	<footer>
-
-	</footer>
-</body>
-</html>
+{% block content %}
+<section>
+    <header>
+        <h3>Espace admin</h3></header>
+    <a href="/admin/clients">Gestion des clients</a>
+</section>
+{% endblock %}

@@ -4,8 +4,8 @@
     "exit": "npm run build"
   },
  "cwd": "__dirname",
- "ext": "js json njk",
+ "ext": "js json njk html",
  "watch": ["src"],
  "delay": 1000,
- "ignore": ["resource"]
+ "ignore": []
 }

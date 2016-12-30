@@ -1,0 +1,46 @@
+{% set title = 'Espace client' %} {% extends "templates/layout.njk" %} {% block content %}
+<section class="row" id="espaceClient">
+    <header>
+        <h3>Espace client</h3>
+    </header>
+
+    <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <header>
+            <h4>S'inscrire</h4>
+        </header>
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputNom" class="col-sm-2 control-label">Votre nom</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input type="text" class="form-control" id="inputNom" placeholder="Nom">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon">@</span>
+                    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 input-group">
+                    <button type="submit" class="btn btn-success">S'inscrire</button>
+                </div>
+            </div>
+        </form>
+
+    </section>
+
+    <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <header>
+            <h4>Réserver une course</h4>
+        </header>
+    </section>
+
+</section>
+{% endblock %}
