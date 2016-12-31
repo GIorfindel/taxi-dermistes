@@ -357,7 +357,7 @@ window.onload = function() { // Attend que la page termine de charger
                 success: function(res, statut) {
                     if (res.status == 'success') {
                         afficherRes('Client supprimé')
-                    setAlert('success', ["Client supprimé"], "supprimerClientAlert")
+                        setAlert('success', ["Client supprimé"], "supprimerClientAlert")
                     }
                 },
                 error: function(res, statut, erreur) {
@@ -385,38 +385,52 @@ window.onload = function() { // Attend que la page termine de charger
             messagesAlert.push("L'identifiant ne doit contenir que des chiffres")
             countError += 1
         }
-        if(!validator.isDate(new Date(formData.course_date).toString()) || !validator.isAfter(new Date(formData.course_date).toString())) {
-          setStatusForm('error', "course_date0", idForm)
-          messagesAlert.push("La date n'est pas valide")
-          countError += 1
+        if (!validator.isDate(new Date(formData.course_date).toString()) || !validator.isAfter(new Date(formData.course_date).toString())) {
+            setStatusForm('error', "course_date0", idForm)
+            messagesAlert.push("La date n'est pas valide")
+            countError += 1
+        } else {
+            setStatusForm('success', "course_date0", idForm)
         }
-        else {
-          setStatusForm('success', "course_date0", idForm)
+        if (!validator.isEmpty(formData.course_depart)) {
+            setStatusForm('success', "course_depart", idForm)
+
+        } else {
+            setStatusForm('error', "course_depart", idForm)
+            messagesAlert.push("Vous devez spécifier un lieu de départ")
+            countError += 1
+        }
+        if (!validator.isEmpty(formData.course_arrivee)) {
+            setStatusForm('success', "course_arrivee", idForm)
+
+        } else {
+            setStatusForm('error', "course_arrivee", idForm)
+            messagesAlert.push("Vous devez spécifier un lieu d'arrivée")
+            countError += 1
         }
 
-        if(countError == 0) {
-          $.ajax({
-              url: 'http://localhost:3001/api/courses',
-              type: 'POST',
-              dataType: 'json', // On désire recevoir du JSON
-              contentType: 'application/json; charset=utf-8',
-              data: JSON.stringify(formData),
-              success: function(res, statut) {
-                  if (res.status == 'success') {
-                      afficherRes('Course ajoutée. Identifiant : ' + res.id)
-                      setAlert('success', ["Course ajoutée. Identifiant : " + res.id], "reserverAlert")
-                  }
-              },
-              error: function(res, statut, erreur) {
-                  afficherRes('Erreur : ' + getError(res).message)
-                  setAlert('error', [getError(res).message], "reserverAlert")
-              }
-          })
-        }
-        else {
-          setAlert('error', messagesAlert, "reserverAlert")
-          countError = 0 //Réinitialisation des erreurs
-          messagesAlert = [] //Réinitialisation des messages
+        if (countError == 0) {
+            $.ajax({
+                url: 'http://localhost:3001/api/courses',
+                type: 'POST',
+                dataType: 'json', // On désire recevoir du JSON
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(formData),
+                success: function(res, statut) {
+                    if (res.status == 'success') {
+                        afficherRes('Course ajoutée. Identifiant : ' + res.id)
+                        setAlert('success', ["Course ajoutée. Identifiant : " + res.id], "reserverAlert")
+                    }
+                },
+                error: function(res, statut, erreur) {
+                    afficherRes('Erreur : ' + getError(res).message)
+                    setAlert('error', [getError(res).message], "reserverAlert")
+                }
+            })
+        } else {
+            setAlert('error', messagesAlert, "reserverAlert")
+            countError = 0 //Réinitialisation des erreurs
+            messagesAlert = [] //Réinitialisation des messages
         }
     })
 
