@@ -3,6 +3,16 @@ window.onload = function() { // Attend que la page termine de charger
     var countError = 0
     var messagesAlert = []
 
+    var uneDate = new Date(2016, 12, 20, 15, 50, 0);
+    var uneDate2 = new Date(2016, 12, 20, 14, 50, 0);
+
+    if (validator.isAfter(uneDate.toString(), uneDate2.toString())) {
+        alert("après")
+    } else {
+        alert("avant/pendant")
+    }
+
+
     function afficherRes(res) {
         $('#res').html('')
         $('#res').html(res)
@@ -308,7 +318,7 @@ window.onload = function() { // Attend que la page termine de charger
                 success: function(res, statut) {
                     if (res.status == 'success') {
                         afficherRes('Client supprimé')
-                    setAlert('success', ["Client supprimé"], "supprimerClientAlert")
+                        setAlert('success', ["Client supprimé"], "supprimerClientAlert")
                     }
                 },
                 error: function(res, statut, erreur) {
@@ -346,7 +356,43 @@ window.onload = function() { // Attend que la page termine de charger
         })
     })
 
+    $('#chercherChauffeur').on('submit', function(e) {
+        e.preventDefault()
+        var idForm = "chercherChauffeur"
+        var formData = formToJSON($(this))
 
+        if (validator.isNumeric(formData.chauffeur_id)) {
+            setStatusForm('success', "chauffeur_id", idForm)
+        } else {
+            setStatusForm('error', "chauffeur_id", idForm)
+            messagesAlert.push("L'identifiant ne doit contenir que des chiffres")
+            countError += 1
+        }
+
+        //$.getJSON("http://localhost:3000/clients", req, function(data) {
+        //    $("#res").text(JSON.stringify(data));
+        //});
+        if (countError == 0) {
+            $.ajax({
+                dataType: 'json',
+                type: 'GET',
+                url: 'http://localhost:3001/api/chauffeurs/' + formData.chauffeur_id,
+                success: function(res) {
+                    console.log(res)
+                    afficherRes(formatageJSON(res))
+                    setAlert('success', [], "chercherClientAlert")
+                },
+                error: function(res, statut, erreur) {
+                    setAlert('error', [getError(res).message], "chercherClientAlert")
+                    afficherRes('Erreur : ' + getError(res).message)
+                }
+            })
+        } else {
+            setAlert('error', messagesAlert, "chercherClientAlert")
+            countError = 0 //Réinitialisation des erreurs
+            messagesAlert = [] //Réinitialisation des messages
+        }
+    })
 
 
 
