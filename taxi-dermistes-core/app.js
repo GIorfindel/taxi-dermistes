@@ -306,7 +306,10 @@ app.post('/courses', (req, res) => {
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
         logger.trace(req.body.client_id)
-        if ((req.body.course_date == null) || validator.isEmpty(req.body.course_date) || !validator.isDate(req.body.course_date) || !validator.isAfter(req.body.course_date)) {
+        logger.trace(req.body.course_date)
+        logger.trace(new Date(req.body.course_date))
+      
+        if ((req.body.course_date == null) || validator.isEmpty(req.body.course_date) || !validator.isDate(new Date(req.body.course_date).toString()) || !validator.isAfter(new Date(req.body.course_date).toString())) {
             res.status(400) //Bad Request
             res.send({
                 error: 'invalidRequest',

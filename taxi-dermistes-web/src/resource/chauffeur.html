@@ -1,11 +1,48 @@
-{% set title = 'Espace chauffeur' %}
-{% extends "templates/layout.njk" %}
-
-{% block content %}
-<section>
+{% set title = 'Espace chauffeur' %} {% extends "templates/layout.njk" %} {% block content %}
+<section class="row" id="espaceChauffeur">
     <header>
-        <h3>Espace chauffeur</h3>
+        <h3>{{title}}</h3>
     </header>
+
+    <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <header>
+            <h4>Identification</h4>
+        </header>
+
+        <form id="chercherChauffeur" method="get" action="" class="form-horizontal">
+            <div class="form-group">
+                <label for="chauffeur_id" class="col-sm-2 control-label">Identifiant</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input type="text" name="chauffeur_id" class="form-control" id="chauffeur_id" placeholder="Votre identifiant de chauffeur">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 input-group">
+                    <button type="submit" class="btn btn-success" name="submitForm">Voir mes courses</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div id="chercherClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                    <div></div>
+                </div>
+            </div>
+        </form>
+
+    </section>
+
+    <section id="coursesChauffeur" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
+        <header>
+            <h4>Vos courses</h4>
+        </header>
+
+        <div id="listeCoursesChauffeur">
+
+        </div>
+
+    </section>
 
 </section>
 {% endblock %}
