@@ -163,6 +163,26 @@ window.onload = function() { // Attend que la page termine de charger
         })
     })
 
+    $('#reserver').on('submit', function(e) {
+        e.preventDefault()
+
+        var formData = formToJSON($(this))
+        $.ajax({
+          url: 'http://localhost:3001/api/courses',
+          type: 'POST',
+          dataType: 'json', // On désire recevoir du JSON
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(formData),
+          success: function(res, statut) {
+            if (res.status == 'success') {
+              afficherRes('Course ajoutée pour l\'utilisateur : ' + res.id)
+            }
+          },
+          error: function(res, statut, erreur) {
+            afficherRes('Erreur : ' + getError(res).message)
+          }
+        })
+    })
 
 
 

@@ -154,6 +154,53 @@ app.get('/chauffeurs', (req, res) => {
     })
 })
 
+app.get('/courses/:course_id', (req, res) => {
+    let listeCourses
+    readFile('./courses.json', 'utf8').then((data) => {
+        listeCourses = JSON.parse(data)
+            //let listeUser = require('./clients.json');
+        let exists = false
+        for (let index in listeCourses.courses) {
+            if (listeCourses.courses[index].course_id == req.params['course_id']) {
+                res.status(200) // Envoi le code HTTP 200 : OK
+                res.json(listeCourses.courses[index])
+                exists = true
+            }
+        }
+        if (!exists) {
+            res.status(404)
+            res.json({
+                error: 'notFound',
+                message: 'Course inexistante'
+            })
+            logger.warn("Impossible d'afficher la course %d", req.params['course_id'])
+        }
+    }).catch((e) => {
+        logger.warn('Erreur : %s', e)
+    })
+})
+
+app.get('/courses', (req, res) => {
+    let listeCourses
+    readFile('./courses.json', 'utf8').then((data) => {
+        listeCourses = JSON.parse(data)
+            //let listeUser = require('./clients.json');
+        if (listeCourses['courses'].length > 0) {
+            res.status(200)
+            res.send(listeCourses.courses)
+        } else {
+            res.status(404)
+            res.send({
+                error: 'notFound',
+                message: 'Aucune course trouvée'
+            })
+        }
+        logger.trace('Nombre de courses : %d', listeCourses.courses.length)
+    }).catch((e) => {
+        logger.warn('Erreur : %s', e)
+    })
+})
+
 /************** POST **************/
 app.post('/clients', (req, res) => {
     let obj
@@ -253,6 +300,48 @@ app.post('/chauffeurs', (req, res) => {
     })
 })
 
+app.post('/courses', (req, res) => {
+    let obj
+    readFile('./courses.json', 'utf8').then((data) => {
+        obj = JSON.parse(data)
+            //let obj = require('./clients.json');
+        logger.trace(req.body.client_id)
+        if ((req.body.client_id == null) || (req.body.course_heure == null) || (req.body.course_depart == null) || (req.body.course_arrivee == null) || validator.isEmpty(req.body.client_id) || validator.isEmpty(req.body.course_heure) || validator.isEmpty(req.body.course_depart) || validator.isEmpty(req.body.course_arrivee)) {
+            res.status(400) //Bad Request
+            res.send({
+                error: 'invalidRequest',
+                message: 'Requête invalide'
+            })
+        } else {
+                req.body.course_id = obj.libre
+                obj.courses.push(req.body)
+                obj.libre = obj.libre + 1
+                fs.writeFile('courses.json', '')
+                fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
+                    if (err) {
+                        logger.error(err)
+                        res.status(500)
+                        res.send({
+                            error: 'internalError',
+                            message: 'Impossible de traiter la requête'
+                        })
+                    } else {
+                        logger.trace("Course ajouté avec l'id %d", (req.body.course_id))
+                        res.status(201) // 201 == Created
+                        res.location('/courses/' + req.body.course_id) // Je vois pas l'intérêt mais c'est dans la spécification REST
+                        res.send({
+                            status: 'success',
+                            id: req.body.course_id
+                        })
+                    }
+                })
+            }
+    }).catch((e) => {
+        logger.warn('Erreur : %s', e)
+    })
+})
+
+
 /************** DELETE **************/
 app.delete('/clients', (req, res) => {
     let obj
@@ -333,6 +422,49 @@ app.delete('/chauffeurs', (req, res) => {
             res.send({
                 error: 'notFound',
                 message: 'Chauffeur inexistant'
+            })
+        }
+    }).catch((e) => {
+        logger.warn('Erreur : %s', e)
+    })
+})
+
+app.delete('/courses', (req, res) => {
+    let obj
+    readFile('./courses.json', 'utf8').then((data) => {
+        obj = JSON.parse(data)
+            //let obj = require('./clients.json');
+        let exists = false
+        for (let index in obj.courses) {
+            if (obj.courses[index].course_id == req.body['course_id']) {
+                exists = true
+                obj.courses.splice(index, 1)
+            }
+        }
+        if (exists) {
+            fs.writeFile('courses.json', '')
+            fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
+                if (err) {
+                    logger.error(err)
+                    res.status(500)
+                    res.send({
+                        error: 'internalError',
+                        message: 'Impossible de traiter la requête'
+                    })
+                } else {
+                    logger.trace('Course %d supprimé', req.body['course_id'])
+                    res.status(200)
+                    res.send({
+                        status: 'success'
+                    })
+                }
+            })
+        } else {
+            logger.warn('Impossible de supprimer la course %d', req.body['course_id'])
+            res.status(404)
+            res.send({
+                error: 'notFound',
+                message: 'Course inexistante'
             })
         }
     }).catch((e) => {
@@ -448,6 +580,63 @@ app.put('/chauffeurs', (req, res) => {
                 })
             }
         }
+    }).catch((e) => {
+        logger.warn('Erreur : %s', e)
+    })
+})
+
+app.put('/courses', (req, res) => {
+    let obj
+    readFile('./courses.json', 'utf8').then((data) => {
+        obj = JSON.parse(data)
+            //let obj = require('./clients.json');
+        let exists = false
+        for (let index in obj.courses) {
+          if (obj.courses[index].course_id == req.body['course_id']) {
+            exists = true
+            if (!validator.isEmpty(req.body.client_id)) {
+              obj.courses[index].client_id = req.body['client_id']
+            }
+            if (!validator.isEmpty(req.body.course_heure)) {
+              obj.courses[index].course_heure = req.body['course_heure']
+            }
+            if (!validator.isEmpty(req.body.course_depart)) {
+              obj.courses[index].course_depart = req.body['course_depart']
+            }
+            if (!validator.isEmpty(req.body.course_arrivee)) {
+              obj.courses[index].course_arrivee = req.body['course_arrivee']
+            }
+            if (!validator.isEmpty(req.body.chauffeur_id)) {
+              obj.courses[index].chauffeur_id = req.body['chauffeur_id']
+            }
+          }
+        }
+        if (exists) {
+          fs.writeFile('courses.json', '')
+          fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
+          if (err) {
+            logger.error(err)
+            res.status(500)
+            res.send({
+              error: 'internalError',
+              message: 'Impossible de traiter la requête'
+            })
+          } else {
+              logger.trace('Course %d modifiée', req.body['course_id'])
+              res.status(200)
+              res.send({
+                status: 'success'
+              })
+            }
+          })
+        } else {
+            logger.warn('Impossible de modifier la course %d', req.body['course_id'])
+            res.status(404)
+            res.send({
+              error: 'notFound',
+              message: 'Course inexistante'
+            })
+          }
     }).catch((e) => {
         logger.warn('Erreur : %s', e)
     })
