@@ -9,6 +9,61 @@ window.onload = function() { // Attend que la page termine de charger
         return JSON.parse(res.responseText)
     }
 
+    function setStatusForm(statut, nomchamp) {
+        var champForm = $("[name='" + nomchamp + "']")
+        var divParent = champForm.parent()
+
+        if (statut == "default") {
+            divParent.removeClass("has-success has-error has-danger")
+            divParent.find(".form-control-feedback").remove()
+        } else if (statut == "success") {
+            setStatusForm("default", nomchamp)
+            divParent.addClass("has-success has-feedback")
+            divParent.append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>')
+        } else if (statut == "error") {
+            setStatusForm("default", nomchamp)
+            divParent.addClass("has-error has-feedback")
+            divParent.append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>')
+        } else if (statut == "warning") {
+            setStatusForm("default", nomchamp)
+            divParent.addClass("has-warning has-feedback")
+            divParent.append('<span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>')
+        }
+
+    }
+
+    function setStatusFormAll(statut, idForm) {
+        var form = formToJSON($("#" + idForm))
+        for (var nomchamp in form) {
+            setStatusForm(statut, nomchamp)
+        }
+    }
+
+    function setMainAlert(statut, messages) {
+        var str = "<ul>"
+        for (var i = 0; i < messages.length; i++) {
+            str += "<li>" + messages[i] + "</li>"
+        }
+        str += "</ul>"
+        var mainAlert = $("#mainAlert")
+        var mainAlertDiv = $("#mainAlert div")
+        mainAlertDiv.html("");
+        mainAlertDiv.html(str);
+        if (statut == "default") {
+            mainAlert.removeClass("hidden alert-warning alert-danger alert-success")
+            mainAlert.addClass("hidden")
+        } else if (statut == "success") {
+            mainAlert.removeClass("hidden alert-warning alert-danger alert-success")
+            mainAlert.addClass("alert-success")
+        } else if (statut == "error") {
+            mainAlert.removeClass("hidden alert-warning alert-danger alert-success")
+            mainAlert.addClass("alert-danger")
+        } else if (statut == "warning") {
+            mainAlert.removeClass("hidden alert-warning alert-danger alert-success")
+            mainAlert.addClass("alert-warning")
+        }
+    }
+
     function formToJSON(form) {
         var unindexed_array = form.serializeArray()
         var indexed_array = {}
@@ -22,7 +77,7 @@ window.onload = function() { // Attend que la page termine de charger
 
     function afficheTab(res) {
         $('#res').html('')
-        var tab = "<table><tr><th>id</th><th>nom</th><th>email</th></tr>";
+        var tab = "<table class='table table-hover'><tr><th>id</th><th>nom</th><th>email</th></tr>";
         for (client in res) {
             /*for (info in res[client]) {
                 tab = "<td>" + res[client].info + "</td>" + tab
@@ -57,27 +112,36 @@ window.onload = function() { // Attend que la page termine de charger
 
     $('#creer').on('submit', function(e) {
         e.preventDefault()
-
         var formData = formToJSON($(this))
-        if (!validator.isEmail(formData.client_mail)) {
-            afficherRes('Adresse email incorrecte')
-        } else {
-
-            $.ajax({
-                url: 'http://localhost:3001/api/clients',
-                type: 'POST',
-                dataType: 'json', // On désire recevoir du JSON
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(formData),
-                success: function(res, statut) {
-                    if (res.status == 'success') {
-                        afficherRes('Client ajouté. Identifiant : ' + res.id)
+        if (!validator.isEmpty(formData.client_name)) {
+            if (!validator.isEmail(formData.client_mail)) {
+                afficherRes('Adresse email incorrecte')
+                setStatusForm('error', "client_mail")
+                setMainAlert('error', ["Adresse email incorrecte"])
+            } else {
+                setStatusForm('success', "client_mail")
+                $.ajax({
+                    url: 'http://localhost:3001/api/clients',
+                    type: 'POST',
+                    dataType: 'json', // On désire recevoir du JSON
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(formData),
+                    success: function(res, statut) {
+                        if (res.status == 'success') {
+                            afficherRes('Client ajouté. Identifiant : ' + res.id)
+                            setStatusFormAll("success", "creer")
+                            setMainAlert('success', ["Votre inscription a bien été enregistrée !"])
+                        }
+                    },
+                    error: function(res, statut, erreur) {
+                        afficherRes('Erreur : ' + getError(res).message)
+                        setMainAlert('error', [getError(res).message])
                     }
-                },
-                error: function(res, statut, erreur) {
-                    afficherRes('Erreur : ' + getError(res).message)
-                }
-            })
+                })
+            }
+        } else {
+            setStatusForm('error', "client_name")
+            setMainAlert('error', ["Vous devez spécifier un nom"])
         }
     })
 
@@ -163,6 +227,7 @@ window.onload = function() { // Attend que la page termine de charger
         })
     })
 
+
     $('#reserver').on('submit', function(e) {
         e.preventDefault()
 
@@ -183,8 +248,6 @@ window.onload = function() { // Attend que la page termine de charger
           }
         })
     })
-
-
 
 
 

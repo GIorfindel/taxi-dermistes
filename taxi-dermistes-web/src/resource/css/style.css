@@ -28,3 +28,11 @@ footer {
 section:first-child {
     padding-top : 60px;
 }
+
+#mainAlert ul{
+  list-style-type: none;
+}
+
+#mainAlert ul li{
+  display: block;
+}
