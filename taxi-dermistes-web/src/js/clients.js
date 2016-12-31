@@ -327,22 +327,48 @@ window.onload = function() { // Attend que la page termine de charger
     $('#reserver').on('submit', function(e) {
         e.preventDefault()
         var formData = formToJSON($(this))
+        var idForm = "reserver"
 
-        $.ajax({
-            url: 'http://localhost:3001/api/courses',
-            type: 'POST',
-            dataType: 'json', // On désire recevoir du JSON
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(formData),
-            success: function(res, statut) {
-                if (res.status == 'success') {
-                    afficherRes('Course ajoutée. Identifiant : ' + res.id)
-                }
-            },
-            error: function(res, statut, erreur) {
-                afficherRes('Erreur : ' + getError(res).message)
-            }
-        })
+        if (validator.isNumeric(formData.client_id)) {
+            setStatusForm('success', "client_id", idForm)
+        } else {
+            setStatusForm('error', "client_id", idForm)
+            messagesAlert.push("L'identifiant ne doit contenir que des chiffres")
+            countError += 1
+        }
+        if(!validator.isDate(new Date(formData.course_date).toString()) || !validator.isAfter(new Date(formData.course_date).toString())) {
+          setStatusForm('error', "course_date0", idForm)
+          messagesAlert.push("La date n'est pas valide")
+          countError += 1
+        }
+        else {
+          setStatusForm('success', "course_date0", idForm)
+        }
+
+        if(countError == 0) {
+          $.ajax({
+              url: 'http://localhost:3001/api/courses',
+              type: 'POST',
+              dataType: 'json', // On désire recevoir du JSON
+              contentType: 'application/json; charset=utf-8',
+              data: JSON.stringify(formData),
+              success: function(res, statut) {
+                  if (res.status == 'success') {
+                      afficherRes('Course ajoutée. Identifiant : ' + res.id)
+                      setAlert('success', ["Course ajoutée. Identifiant : " + res.id], "reserverAlert")
+                  }
+              },
+              error: function(res, statut, erreur) {
+                  afficherRes('Erreur : ' + getError(res).message)
+                  setAlert('error', [getError(res).message], "reserverAlert")
+              }
+          })
+        }
+        else {
+          setAlert('error', messagesAlert, "reserverAlert")
+          countError = 0 //Réinitialisation des erreurs
+          messagesAlert = [] //Réinitialisation des messages
+        }
     })
 
     $('#chercherChauffeur').on('submit', function(e) {

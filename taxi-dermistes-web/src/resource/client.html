@@ -57,10 +57,10 @@
             <div class="form-group">
                 <label for="course_date" class="col-sm-2 control-label">Date et heure de départ</label>
                 <div class="input-group date form_datetime col-sm-8" data-date-format="dd MM yyyy - hh:ii" data-link-field="dtp_input1">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                    <input class="form-control" size="16" type="text" value="" readonly id="course_date">
-                    <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input class="form-control" size="16" type="text" value="" name="course_date0" readonly id="course_date">
+                    <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
                 </div>
                 <input id="dtp_input1" value="" type="hidden" name="course_date">
 
@@ -96,12 +96,13 @@
         </form>
     </section>
 
-    <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <!--  <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <header>
             <h4>Résultat</h4></header>
         <div id="res"></div>
     </section>
     <div id="res"></div>
+  -->
 
 </section>
 {% endblock %}
