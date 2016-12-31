@@ -98,9 +98,32 @@ window.onload = function() { // Attend que la page termine de charger
         return tab
     }
 
+    function creerTabChauffeur(res) {
+        var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>nom</th><th>email</th></tr>";
+        for (chauffeur in res) {
+            /*for (info in res[client]) {
+                tab = "<td>" + res[client].info + "</td>" + tab
+            }
+            tab = "<tr>" + tab
+            tab += "</tr>"*/
+            tab += "<tr>";
+            tab += "<td>" + res[chauffeur].chauffeur_id + "</td>"
+            tab += "<td>" + res[chauffeur].chauffeur_name + "</td>"
+            tab += "<td>" + res[chauffeur].chauffeur_mail + "</td></tr>"
+        }
+        tab += "</table>"
+        return tab
+    }
+
     function afficheTab(res) {
         $('#res').html('')
         var tab = creerTabClient
+        $('#res').append(tab)
+    }
+
+    function afficheTabC(res) {
+        $('#res').html('')
+        var tab = creerTabChauffeur
         $('#res').append(tab)
     }
 
@@ -435,6 +458,23 @@ window.onload = function() { // Attend que la page termine de charger
             messagesAlert = [] //Réinitialisation des messages
         }
 
+    })
+
+    $('#listerC').on('submit', function(e) {
+        e.preventDefault()
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: 'http://localhost:3001/api/chauffeurs/',
+            success: function(res) {
+                setAlert('nocolor', [creerTabChauffeur(res)], "listerClientAlert")
+                afficheTabC(res)
+            },
+            error: function(res, statut, erreur) {
+                setAlert('error', [getError(res).message], "listerClientAlert")
+                    ('Erreur : ' + getError(res).message)
+            }
+        })
     })
 
 
