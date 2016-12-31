@@ -98,9 +98,58 @@ window.onload = function() { // Attend que la page termine de charger
         return tab
     }
 
+    function creerTabChauffeur(res) {
+        var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>nom</th><th>email</th></tr>";
+        for (chauffeur in res) {
+            /*for (info in res[client]) {
+                tab = "<td>" + res[client].info + "</td>" + tab
+            }
+            tab = "<tr>" + tab
+            tab += "</tr>"*/
+            tab += "<tr>";
+            tab += "<td>" + res[chauffeur].chauffeur_id + "</td>"
+            tab += "<td>" + res[chauffeur].chauffeur_name + "</td>"
+            tab += "<td>" + res[chauffeur].chauffeur_mail + "</td></tr>"
+        }
+        tab += "</table>"
+        return tab
+    }
+
+    function creerTabCourses(res) {
+        var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>chauffeur</th></tr>";
+        for (course in res) {
+            /*for (info in res[client]) {
+                tab = "<td>" + res[client].info + "</td>" + tab
+            }
+            tab = "<tr>" + tab
+            tab += "</tr>"*/
+            tab += "<tr>";
+            tab += "<td>" + res[course].course_id + "</td>"
+            tab += "<td>" + res[course].client_id + "</td>"
+            tab += "<td>" + res[course].course_date + "</td>"
+            tab += "<td>" + res[course].course_depart + "</td>"
+            tab += "<td>" + res[course].course_arrivee + "</td>"
+            tab += "<td>" + res[course].chauffeur_id + "</td>"
+        }
+        tab += "</table>"
+        return tab
+    }
+
     function afficheTab(res) {
         $('#res').html('')
         var tab = creerTabClient
+        $('#res').append(tab)
+    }
+
+    function afficheTabC(res) {
+        $('#res').html('')
+        var tab = creerTabChauffeur
+        $('#res').append(tab)
+    }
+
+    function afficheTabCourses(res) {
+        $('#res').html('')
+        var tab = creerTabChauffeur
         $('#res').append(tab)
     }
 
@@ -409,6 +458,93 @@ window.onload = function() { // Attend que la page termine de charger
         }
     })
 
+    $('#creerC').on('submit', function(e) {
+        e.preventDefault()
+        var idForm = "creer"
+        var formData = formToJSON($(this))
+
+        //ETAPE 1 : Vérifications côté client
+        if (!validator.isEmpty(formData.chauffeur_name)) {
+            setStatusForm('success', "chauffeur_name", idForm)
+
+        } else {
+            setStatusForm('error', "chauffeur_name", idForm)
+            messagesAlert.push("Vous devez spécifier un nom")
+            countError += 1
+        }
+        if (!validator.isEmail(formData.chauffeur_mail)) {
+            countError += 1
+            afficherRes('Adresse email incorrecte')
+            setStatusForm('error', "chauffeur_mail", idForm)
+            messagesAlert.push("Adresse email incorrecte")
+        } else {
+            setStatusForm('success', "chauffeur_mail", idForm)
+        }
+
+        //ETAPE 2 : Envoi des données au serveur
+        if (countError == 0) {
+            $.ajax({
+                url: 'http://localhost:3001/api/chauffeurs',
+                type: 'POST',
+                dataType: 'json', // On désire recevoir du JSON
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(formData),
+                success: function(res, statut) {
+                    if (res.status == 'success') {
+                        afficherRes('Chauffeur ajouté. Identifiant : ' + res.id)
+                        setStatusFormAll("success", idForm)
+                        setAlert('success', ["Votre inscription a bien été enregistrée ! <i class='glyphicon glyphicon-ok-circle'></i>", "Votre identifiant est " + res.id], "creerClientAlert")
+                    }
+                },
+                error: function(res, statut, erreur) {
+                    afficherRes('Erreur : ' + getError(res).message)
+                    setAlert('error', [getError(res).message], "creerClientAlert")
+                }
+            })
+        }
+
+        //ETAPE 3 : Affichage des erreurs côté client
+        else {
+            setAlert('error', messagesAlert, "creerClientAlert")
+            countError = 0 //Réinitialisation des erreurs
+            messagesAlert = [] //Réinitialisation des messages
+        }
+
+    })
+
+    $('#listerC').on('submit', function(e) {
+        e.preventDefault()
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: 'http://localhost:3001/api/chauffeurs/',
+            success: function(res) {
+                setAlert('nocolor', [creerTabChauffeur(res)], "listerClientAlert")
+                afficheTabC(res)
+            },
+            error: function(res, statut, erreur) {
+                setAlert('error', [getError(res).message], "listerClientAlert")
+                    ('Erreur : ' + getError(res).message)
+            }
+        })
+    })
+
+    $('#listerCourses').on('submit', function(e) {
+        e.preventDefault()
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: 'http://localhost:3001/api/courses/',
+            success: function(res) {
+                setAlert('nocolor', [creerTabCourses(res)], "listerClientAlert")
+                afficheTabCourses(res)
+            },
+            error: function(res, statut, erreur) {
+                setAlert('error', [getError(res).message], "listerClientAlert")
+                    ('Erreur : ' + getError(res).message)
+            }
+        })
+    })
 
 
 
