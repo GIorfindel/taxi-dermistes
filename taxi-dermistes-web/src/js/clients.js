@@ -115,6 +115,26 @@ window.onload = function() { // Attend que la page termine de charger
         return tab
     }
 
+    function creerTabCourses(res) {
+        var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>chauffeur</th></tr>";
+        for (course in res) {
+            /*for (info in res[client]) {
+                tab = "<td>" + res[client].info + "</td>" + tab
+            }
+            tab = "<tr>" + tab
+            tab += "</tr>"*/
+            tab += "<tr>";
+            tab += "<td>" + res[course].course_id + "</td>"
+            tab += "<td>" + res[course].client_id + "</td>"
+            tab += "<td>" + res[course].course_date + "</td>"
+            tab += "<td>" + res[course].course_depart + "</td>"
+            tab += "<td>" + res[course].course_arrivee + "</td>"
+            tab += "<td>" + res[course].chauffeur_id + "</td>"
+        }
+        tab += "</table>"
+        return tab
+    }
+
     function afficheTab(res) {
         $('#res').html('')
         var tab = creerTabClient
@@ -122,6 +142,12 @@ window.onload = function() { // Attend que la page termine de charger
     }
 
     function afficheTabC(res) {
+        $('#res').html('')
+        var tab = creerTabChauffeur
+        $('#res').append(tab)
+    }
+
+    function afficheTabCourses(res) {
         $('#res').html('')
         var tab = creerTabChauffeur
         $('#res').append(tab)
@@ -469,6 +495,23 @@ window.onload = function() { // Attend que la page termine de charger
             success: function(res) {
                 setAlert('nocolor', [creerTabChauffeur(res)], "listerClientAlert")
                 afficheTabC(res)
+            },
+            error: function(res, statut, erreur) {
+                setAlert('error', [getError(res).message], "listerClientAlert")
+                    ('Erreur : ' + getError(res).message)
+            }
+        })
+    })
+
+    $('#listerCourses').on('submit', function(e) {
+        e.preventDefault()
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: 'http://localhost:3001/api/courses/',
+            success: function(res) {
+                setAlert('nocolor', [creerTabCourses(res)], "listerClientAlert")
+                afficheTabCourses(res)
             },
             error: function(res, statut, erreur) {
                 setAlert('error', [getError(res).message], "listerClientAlert")
