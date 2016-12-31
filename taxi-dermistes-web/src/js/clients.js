@@ -3,16 +3,6 @@ window.onload = function() { // Attend que la page termine de charger
     var countError = 0
     var messagesAlert = []
 
-    var uneDate = new Date(2016, 12, 20, 15, 50, 0);
-    var uneDate2 = new Date(2016, 12, 20, 14, 50, 0);
-
-    if (validator.isAfter(uneDate.toString(), uneDate2.toString())) {
-        alert("après")
-    } else {
-        alert("avant/pendant")
-    }
-
-
     function afficherRes(res) {
         $('#res').html('')
         $('#res').html(res)
@@ -318,7 +308,7 @@ window.onload = function() { // Attend que la page termine de charger
                 success: function(res, statut) {
                     if (res.status == 'success') {
                         afficherRes('Client supprimé')
-                        setAlert('success', ["Client supprimé"], "supprimerClientAlert")
+                    setAlert('success', ["Client supprimé"], "supprimerClientAlert")
                     }
                 },
                 error: function(res, statut, erreur) {
