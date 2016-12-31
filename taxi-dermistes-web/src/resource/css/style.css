@@ -29,10 +29,11 @@ section:first-child {
     padding-top : 60px;
 }
 
-#mainAlert ul{
+.alert ul{
   list-style-type: none;
 }
 
-#mainAlert ul li{
+.alert ul li{
   display: block;
+  font-size: 16px;
 }

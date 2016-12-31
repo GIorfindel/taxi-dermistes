@@ -1,6 +1,4 @@
-{% set title = 'Gestion des clients' %} {% extends "templates/layout.njk" %}
-
-{% block content %}
+{% set title = 'Gestion des clients' %} {% extends "templates/layout.njk" %} {% block content %}
 <section>
     <header>
         <h3>Gestion des clients</h3></header>
@@ -9,49 +7,152 @@
 
         <section>
             <header>
-                <h3>Ajouter un utilisateur</h3></header>
-            <form id="creer" method="post" action="">
-                <p><input type="text" name="client_name" placeholder="Nom" required/></p>
-                <p><input type="email" name="client_mail" placeholder="Adresse email" required/></p>
-                <p><button type="submit" name="submitForm">Envoyer</button></p>
+                <h3>Ajouter un client</h3></header>
+            <form id="creer" method="post" action="" class="form-horizontal">
+                <div class="form-group">
+                    <label for="client_name" class="col-sm-2 control-label">Nom</label>
+                    <div class="col-sm-8 input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" name="client_name" class="form-control" id="client_name" placeholder="Nom">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="client_mail" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-8 input-group">
+                        <span class="input-group-addon">@</span>
+                        <input type="email" name="client_mail" class="form-control" id="client_mail" placeholder="Email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 input-group">
+                        <button type="submit" class="btn btn-success" name="submitForm">Ajouter</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div id="creerClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                        <div></div>
+                    </div>
+                </div>
             </form>
         </section>
 
         <section>
             <header>
                 <h3>Chercher un utilisateur par id</h3></header>
-            <form id="chercher" method="get" action="">
-                <p><input type="text" name="client_id" placeholder="Identifiant" required/></p>
-                <p><button type="submit" name="submitForm">Envoyer</button></p>
+            <form id="chercher" method="get" action="" class="form-horizontal">
+                <div class="form-group">
+                    <label for="client_id" class="col-sm-2 control-label">Identifiant</label>
+                    <div class="col-sm-8 input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" name="client_id" class="form-control" id="client_id" placeholder="Identifiant">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 input-group">
+                        <button type="submit" class="btn btn-success" name="submitForm">Chercher</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div id="chercherClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                        <div></div>
+                    </div>
+                </div>
             </form>
         </section>
 
         <section>
             <header>
                 <h3>Afficher tous les utilisateurs</h3></header>
-            <form id="lister" method="get" action="">
-                <p><button type="submit" name="submitForm">Envoyer</button></p>
+            <form id="lister" method="get" action="" class="form-horizontal">
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 input-group">
+                        <button type="submit" class="btn btn-success" name="submitForm">Afficher</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div id="listerClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                        <div></div>
+                    </div>
+                </div>
             </form>
         </section>
 
         <section>
             <header>
                 <h3>Modifier un utilisateur</h3></header>
-            <form id="modifier" method="post" action="">
-                <p><input type="text" name="client_id" placeholder="Identifiant" required/></p>
-                <p><input type="text" name="client_name" placeholder="Nom" /></p>
-                <p><input type="email" name="client_mail" placeholder="Adresse email" /></p>
-                <p><button type="submit" name="submitForm">Envoyer</button></p>
+            <form id="modifier" method="post" action="" class="form-horizontal">
+
+                <div class="form-group">
+                    <label for="client_id" class="col-sm-2 control-label">Identifiant</label>
+                    <div class="col-sm-8 input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" name="client_id" class="form-control" id="client_id" placeholder="Identifiant">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="client_name" class="col-sm-2 control-label">Nom</label>
+                    <div class="col-sm-8 input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" name="client_name" class="form-control" id="client_name" placeholder="Nom">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="client_mail" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-8 input-group">
+                        <span class="input-group-addon">@</span>
+                        <input type="email" name="client_mail" class="form-control" id="client_mail" placeholder="Email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 input-group">
+                        <button type="submit" class="btn btn-success" name="submitForm">Modifier</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div id="modifierClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                        <div></div>
+                    </div>
+                </div>
             </form>
         </section>
 
         <section>
             <header>
-                <h3>Supprimer un utilisateur</h3></header>
-            <form id="supprimer" method="post" action="">
-                <p><input type="text" name="client_id" placeholder="Identifiant" required/></p>
-                <p><button type="submit" name="submitForm">Envoyer</button></p>
+                <h3>Supprimer un utilisateur</h3>
+            </header>
+            <form id="supprimer" method="post" action="" class="form-horizontal">
+                <div class="form-group">
+                    <label for="client_id" class="col-sm-2 control-label">Identifiant</label>
+                    <div class="col-sm-8 input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" name="client_id" class="form-control" id="client_id" placeholder="Identifiant">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 input-group">
+                        <button type="submit" class="btn btn-danger" name="submitForm">Supprimer</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div id="supprimerClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                        <div></div>
+                    </div>
+                </div>
             </form>
+
         </section>
     </div>
 
@@ -62,6 +163,7 @@
             <div id="res"></div>
         </section>
     </div>
+
 </section>
 
 {% endblock %}

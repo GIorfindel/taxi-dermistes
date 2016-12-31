@@ -7,5 +7,5 @@
  "ext": "js json njk html",
  "watch": ["src"],
  "delay": 1000,
- "ignore": []
+ "ignore": ["resource/js/bundle.js"]
 }
