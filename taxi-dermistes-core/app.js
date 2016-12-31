@@ -5,6 +5,7 @@ let app = express()
 let logger = require('tracer').colorConsole()
 let validator = require('validator')
 let P = require('bluebird')
+let async = require('async');
 const fs = require('fs')
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
@@ -308,7 +309,7 @@ app.post('/courses', (req, res) => {
         logger.trace(req.body.client_id)
         logger.trace(req.body.course_date)
         logger.trace(new Date(req.body.course_date))
-      
+
         if ((req.body.course_date == null) || validator.isEmpty(req.body.course_date) || !validator.isDate(new Date(req.body.course_date).toString()) || !validator.isAfter(new Date(req.body.course_date).toString())) {
             res.status(400) //Bad Request
             res.send({
@@ -597,10 +598,14 @@ app.put('/chauffeurs', (req, res) => {
 
 app.put('/courses', (req, res) => {
     let obj
-    readFile('./courses.json', 'utf8').then((data) => {
-        obj = JSON.parse(data)
+    let chauffeurs
+    var files = ['./chauffeur.json', './courses.json'];
+    async.map(files, fs.readFile, function (err, data){
+        chauffeurs = JSON.parse(data[0])
+        obj = JSON.parse(data[1])
             //let obj = require('./clients.json');
         let exists = false
+        let existsC = false
         for (let index in obj.courses) {
           if (obj.courses[index].course_id == req.body['course_id']) {
             exists = true
@@ -621,7 +626,12 @@ app.put('/courses', (req, res) => {
             }
           }
         }
-        if (exists) {
+        for (let index in chauffeurs.chauffeurs) {
+            if (chauffeurs.chauffeurs[index].chauffeur_id == req.body['chauffeur_id']) {
+                existsC = true
+            }
+        }
+        if (exists && existsC) {
           fs.writeFile('courses.json', '')
           fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
           if (err) {
@@ -647,7 +657,5 @@ app.put('/courses', (req, res) => {
               message: 'Course inexistante'
             })
           }
-    }).catch((e) => {
-        logger.warn('Erreur : %s', e)
     })
 })

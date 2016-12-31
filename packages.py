@@ -9,6 +9,7 @@ os.system('npm install eslint-config-usecases --save-dev')
 os.system('npm install browserify --save-dev')
 os.system('npm install jquery --save-dev')
 os.system('npm install bluebird --save-dev')
+os.system('npm install --save async')
 
 os.chdir('../taxi-dermistes-web')
 os.system('npm install express-http-proxy --save')
