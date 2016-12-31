@@ -383,6 +383,59 @@ window.onload = function() { // Attend que la page termine de charger
         }
     })
 
+    $('#creerC').on('submit', function(e) {
+        e.preventDefault()
+        var idForm = "creer"
+        var formData = formToJSON($(this))
+
+        //ETAPE 1 : Vérifications côté client
+        if (!validator.isEmpty(formData.chauffeur_name)) {
+            setStatusForm('success', "chauffeur_name", idForm)
+
+        } else {
+            setStatusForm('error', "chauffeur_name", idForm)
+            messagesAlert.push("Vous devez spécifier un nom")
+            countError += 1
+        }
+        if (!validator.isEmail(formData.chauffeur_mail)) {
+            countError += 1
+            afficherRes('Adresse email incorrecte')
+            setStatusForm('error', "chauffeur_mail", idForm)
+            messagesAlert.push("Adresse email incorrecte")
+        } else {
+            setStatusForm('success', "chauffeur_mail", idForm)
+        }
+
+        //ETAPE 2 : Envoi des données au serveur
+        if (countError == 0) {
+            $.ajax({
+                url: 'http://localhost:3001/api/chauffeurs',
+                type: 'POST',
+                dataType: 'json', // On désire recevoir du JSON
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(formData),
+                success: function(res, statut) {
+                    if (res.status == 'success') {
+                        afficherRes('Chauffeur ajouté. Identifiant : ' + res.id)
+                        setStatusFormAll("success", idForm)
+                        setAlert('success', ["Votre inscription a bien été enregistrée ! <i class='glyphicon glyphicon-ok-circle'></i>", "Votre identifiant est " + res.id], "creerClientAlert")
+                    }
+                },
+                error: function(res, statut, erreur) {
+                    afficherRes('Erreur : ' + getError(res).message)
+                    setAlert('error', [getError(res).message], "creerClientAlert")
+                }
+            })
+        }
+
+        //ETAPE 3 : Affichage des erreurs côté client
+        else {
+            setAlert('error', messagesAlert, "creerClientAlert")
+            countError = 0 //Réinitialisation des erreurs
+            messagesAlert = [] //Réinitialisation des messages
+        }
+
+    })
 
 
 
