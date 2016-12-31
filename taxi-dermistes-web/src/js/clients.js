@@ -240,7 +240,7 @@ window.onload = function() { // Attend que la page termine de charger
           data: JSON.stringify(formData),
           success: function(res, statut) {
             if (res.status == 'success') {
-              afficherRes('Course ajoutée pour l\'utilisateur : ' + res.id)
+              afficherRes('Course ajoutée. Identifiant : ' + res.id)
             }
           },
           error: function(res, statut, erreur) {
