@@ -328,7 +328,6 @@ window.onload = function() { // Attend que la page termine de charger
         e.preventDefault()
         var formData = formToJSON($(this))
 
-
         $.ajax({
             url: 'http://localhost:3001/api/courses',
             type: 'POST',

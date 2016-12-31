@@ -306,7 +306,14 @@ app.post('/courses', (req, res) => {
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
         logger.trace(req.body.client_id)
-        if ((req.body.client_id == null) || (req.body.course_heure == null) || (req.body.course_depart == null) || (req.body.course_arrivee == null) || validator.isEmpty(req.body.client_id) || validator.isEmpty(req.body.course_heure) || validator.isEmpty(req.body.course_depart) || validator.isEmpty(req.body.course_arrivee)) {
+        if ((req.body.course_date == null) || validator.isEmpty(req.body.course_date) || !validator.isDate(req.body.course_date) || !validator.isAfter(req.body.course_date)) {
+            res.status(400) //Bad Request
+            res.send({
+                error: 'invalidRequest',
+                message: 'Date invalide'
+            })
+          }
+        else if ((req.body.client_id == null) || (req.body.course_depart == null) || (req.body.course_arrivee == null) || validator.isEmpty(req.body.client_id) || validator.isEmpty(req.body.course_depart) || validator.isEmpty(req.body.course_arrivee)) {
             res.status(400) //Bad Request
             res.send({
                 error: 'invalidRequest',
@@ -597,8 +604,8 @@ app.put('/courses', (req, res) => {
             if (!validator.isEmpty(req.body.client_id)) {
               obj.courses[index].client_id = req.body['client_id']
             }
-            if (!validator.isEmpty(req.body.course_heure)) {
-              obj.courses[index].course_heure = req.body['course_heure']
+            if (!validator.isEmpty(req.body.course_date)) {
+              obj.courses[index].course_date = req.body['course_date']
             }
             if (!validator.isEmpty(req.body.course_depart)) {
               obj.courses[index].course_depart = req.body['course_depart']
