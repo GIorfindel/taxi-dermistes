@@ -75,7 +75,7 @@ function creerTabCourses(res) {
 }
 
 function creerTabCoursesLibres(res) {
-    var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>Accepter</th></tr>";
+    var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>Accepter</th><th>Refuser</th></tr>";
     for (var course in res) {
         /*for (info in res[client]) {
             tab = "<td>" + res[client].info + "</td>" + tab

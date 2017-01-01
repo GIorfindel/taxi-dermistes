@@ -4,6 +4,7 @@ let express = require('express')
 let app = express()
 let logger = require('tracer').colorConsole()
 let validator = require('validator')
+let validation = require('./validation.js')
 let P = require('bluebird')
 let async = require('async');
 const fs = require('fs')
@@ -243,14 +244,14 @@ app.post('/clients', (req, res) => {
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
         logger.trace(req.body.client_mail)
-        if ((req.body.client_mail == null) || (req.body.client_name == null) || validator.isEmpty(req.body.client_mail) || validator.isEmpty(req.body.client_name)) {
+        if ((validation.isEmpty(req.body.client_mail) || validation.isEmpty(req.body.client_name))) {
             res.status(400) //Bad Request
             res.send({
                 error: 'invalidRequest',
                 message: 'Requête invalide'
             })
         } else {
-            if (validator.isEmail(req.body.client_mail) == false) {
+            if (!validation.isValidEmail(req.body.client_mail)) {
                 res.status(400) //Bad Request
                 res.send({
                     error: 'invalidEmail',
@@ -292,14 +293,14 @@ app.post('/chauffeurs', (req, res) => {
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
         logger.trace(req.body.chauffeur_mail)
-        if ((req.body.chauffeur_mail == null) || (req.body.chauffeur_name == null) || validator.isEmpty(req.body.chauffeur_mail) || validator.isEmpty(req.body.chauffeur_name)) {
+        if (validation.isEmpty(req.body.chauffeur_mail) || validation.isEmpty(req.body.chauffeur_name)) {
             res.status(400) //Bad Request
             res.send({
                 error: 'invalidRequest',
                 message: 'Requête invalide'
             })
         } else {
-            if (validator.isEmail(req.body.chauffeur_mail) == false) {
+            if (validation.isValidEmail(req.body.chauffeur_mail) == false) {
                 res.status(400) //Bad Request
                 res.send({
                     error: 'invalidEmail',
@@ -355,14 +356,14 @@ app.post('/courses', (req, res) => {
         }
         if(exists)
           {
-            if ((req.body.course_date == null) || validator.isEmpty(req.body.course_date) || !validator.isDate(new Date(req.body.course_date).toString()) || !validator.isAfter(new Date(req.body.course_date).toString())) {
+            if (!validation.isValidFutureDate(new Date(req.body.course_date))) {
               res.status(400) //Bad Request
               res.send({
                   error: 'invalidRequest',
                   message: 'Date invalide'
                 })
               }
-              else if ((req.body.client_id == null) || (req.body.course_depart == null) || (req.body.course_arrivee == null) || validator.isEmpty(req.body.client_id) || validator.isEmpty(req.body.course_depart) || validator.isEmpty(req.body.course_arrivee)) {
+              else if (validation.isEmpty(req.body.client_id) || validation.isEmpty(req.body.course_depart) || validation.isEmpty(req.body.course_arrivee)) {
                 res.status(400) //Bad Request
                 res.send({
                   error: 'invalidRequest',
@@ -541,7 +542,7 @@ app.put('/clients', (req, res) => {
     readFile('./clients.json', 'utf8').then((data) => {
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
-        if (!validator.isEmpty(req.body.client_mail) && (validator.isEmail(req.body.client_mail) == false)) {
+        if (!validation.isValidEmail(req.body.client_mail)) {
             res.status(400) //Bad Request
             res.send({
                 error: 'invalidEmail',
@@ -552,10 +553,10 @@ app.put('/clients', (req, res) => {
             for (let index in obj.clients) {
                 if (obj.clients[index].client_id == req.body['client_id']) {
                     exists = true
-                    if (!validator.isEmpty(req.body.client_name)) {
+                    if (!validation.isEmpty(req.body.client_name)) {
                         obj.clients[index].client_name = req.body['client_name']
                     }
-                    if (!validator.isEmpty(req.body.client_mail)) {
+                    if (!validation.isEmpty(req.body.client_mail)) {
                         obj.clients[index].client_mail = req.body['client_mail']
                     }
                 }
@@ -597,7 +598,7 @@ app.put('/chauffeurs', (req, res) => {
     readFile('./chauffeur.json', 'utf8').then((data) => {
         obj = JSON.parse(data)
             //let obj = require('./clients.json');
-        if (!validator.isEmpty(req.body.chauffeur_mail) && (validator.isEmail(req.body.chauffeur_mail) == false)) {
+        if (!validation.isValidEmail(req.body.chauffeur_mail)) {
             res.status(400) //Bad Request
             res.send({
                 error: 'invalidEmail',
@@ -608,10 +609,10 @@ app.put('/chauffeurs', (req, res) => {
             for (let index in obj.chauffeurs) {
                 if (obj.chauffeurs[index].chauffeur_id == req.body['chauffeur_id']) {
                     exists = true
-                    if (!validator.isEmpty(req.body.chauffeur_name)) {
+                    if (!validation.isEmpty(req.body.chauffeur_name)) {
                         obj.chauffeurs[index].chauffeur_name = req.body['chauffeur_name']
                     }
-                    if (!validator.isEmpty(req.body.chauffeur_mail)) {
+                    if (!validation.isEmpty(req.body.chauffeur_mail)) {
                         obj.chauffeurs[index].chauffeur_mail = req.body['chauffeur_mail']
                     }
                 }
@@ -661,19 +662,19 @@ app.put('/courses', (req, res) => {
         for (let index in obj.courses) {
           if (obj.courses[index].course_id == req.body['course_id']) {
             exists = true
-            if (!validator.isEmpty(req.body.client_id)) {
+            if (!validation.isEmpty(req.body.client_id)) {
               obj.courses[index].client_id = req.body['client_id']
             }
-            if (!validator.isEmpty(req.body.course_date)) {
+            if (!validation.isEmpty(req.body.course_date)) {
               obj.courses[index].course_date = req.body['course_date']
             }
-            if (!validator.isEmpty(req.body.course_depart)) {
+            if (!validation.isEmpty(req.body.course_depart)) {
               obj.courses[index].course_depart = req.body['course_depart']
             }
-            if (!validator.isEmpty(req.body.course_arrivee)) {
+            if (!validation.isEmpty(req.body.course_arrivee)) {
               obj.courses[index].course_arrivee = req.body['course_arrivee']
             }
-            if (!validator.isEmpty(req.body.chauffeur_id)) {
+            if (!validation.isEmpty(req.body.chauffeur_id)) {
               obj.courses[index].chauffeur_id = req.body['chauffeur_id']
             }
           }
