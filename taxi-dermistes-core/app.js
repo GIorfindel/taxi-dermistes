@@ -3,10 +3,9 @@
 let express = require('express')
 let app = express()
 let logger = require('tracer').colorConsole()
-let validator = require('validator')
 let validation = require('./validation.js')
 let P = require('bluebird')
-let async = require('async');
+let async = require('async')
 const fs = require('fs')
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
@@ -158,35 +157,34 @@ app.get('/chauffeurs', (req, res) => {
 
 
 app.get('/chauffeurs/:chauffeur_id/courses', (req, res) => {
-  let listeCourses
-  let listeCoursesChauffeur = []
-  readFile('./courses.json', 'utf8').then((data) => {
-      listeCourses = JSON.parse(data)
+    let listeCourses
+    let listeCoursesChauffeur = []
+    readFile('./courses.json', 'utf8').then((data) => {
+        listeCourses = JSON.parse(data)
           //let listeUser = require('./clients.json');
-      let exists = false
-      for (let index in listeCourses.courses) {
-          logger.info(index)
-          if (listeCourses.courses[index].chauffeur_id == req.params['chauffeur_id']) {
-              listeCoursesChauffeur.push(listeCourses.courses[index])
-              logger.info(listeCoursesChauffeur)
-              exists = true
-          }
-      }
-      if (!exists) {
-          res.status(404)
-          res.json({
-              error: 'notFound',
-              message: 'Aucune course trouvée'
-          })
-          logger.warn("Aucune course trouvée pour le chauffeur  %d", req.params['chauffeur_id'])
-      }
-      else {
-        res.status(200) // Envoi le code HTTP 200 : OK
-        res.json(listeCoursesChauffeur)
-      }
-  }).catch((e) => {
-      logger.warn('Erreur : %s', e)
-  })
+        let exists = false
+        for (let index in listeCourses.courses) {
+            logger.info(index)
+            if (listeCourses.courses[index].chauffeur_id == req.params['chauffeur_id']) {
+                listeCoursesChauffeur.push(listeCourses.courses[index])
+                logger.info(listeCoursesChauffeur)
+                exists = true
+            }
+        }
+        if (!exists) {
+            res.status(404)
+            res.json({
+                error: 'notFound',
+                message: 'Aucune course trouvée'
+            })
+            logger.warn('Aucune course trouvée pour le chauffeur  %d', req.params['chauffeur_id'])
+        } else {
+            res.status(200) // Envoi le code HTTP 200 : OK
+            res.json(listeCoursesChauffeur)
+        }
+    }).catch((e) => {
+        logger.warn('Erreur : %s', e)
+    })
 })
 
 
@@ -339,9 +337,9 @@ app.post('/chauffeurs', (req, res) => {
 app.post('/courses', (req, res) => {
     let obj
     let clients
-    var files = ['./clients.json', './courses.json']
+    let files = ['./clients.json', './courses.json']
     let exists = false
-    async.map(files, fs.readFile, function (err, data){
+    async.map(files, fs.readFile, (err, data) => {
         clients = JSON.parse(data[0])
         obj = JSON.parse(data[1])
             //let obj = require('./clients.json');
@@ -354,54 +352,51 @@ app.post('/courses', (req, res) => {
                 exists = true
             }
         }
-        if(exists)
-          {
+        if (exists) {
             if (!validation.isValidFutureDate(new Date(req.body.course_date))) {
-              res.status(400) //Bad Request
-              res.send({
-                  error: 'invalidRequest',
-                  message: 'Date invalide'
-                })
-              }
-              else if (validation.isEmpty(req.body.client_id) || validation.isEmpty(req.body.course_depart) || validation.isEmpty(req.body.course_arrivee)) {
                 res.status(400) //Bad Request
                 res.send({
-                  error: 'invalidRequest',
-                  message: 'Requête invalide'
+                    error: 'invalidRequest',
+                    message: 'Date invalide'
                 })
-              } else {
-                  req.body.course_id = obj.libre
-                  obj.courses.push(req.body)
-                  obj.libre = obj.libre + 1
-                  fs.writeFile('courses.json', '')
-                  fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
-                      if (err) {
-                          logger.error(err)
-                          res.status(500)
-                          res.send({
-                              error: 'internalError',
-                              message: 'Impossible de traiter la requête'
-                            })
-                          } else {
-                            logger.trace("Course ajouté avec l'id %d", (req.body.course_id))
-                            res.status(201) // 201 == Created
-                            res.location('/courses/' + req.body.course_id) // Je vois pas l'intérêt mais c'est dans la spécification REST
-                            res.send({
-                              status: 'success',
-                              id: req.body.course_id
-                            })
-                          }
+            } else if (validation.isEmpty(req.body.client_id) || validation.isEmpty(req.body.course_depart) || validation.isEmpty(req.body.course_arrivee)) {
+                res.status(400) //Bad Request
+                res.send({
+                    error: 'invalidRequest',
+                    message: 'Requête invalide'
+                })
+            } else {
+                req.body.course_id = obj.libre
+                obj.courses.push(req.body)
+                obj.libre = obj.libre + 1
+                fs.writeFile('courses.json', '')
+                fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
+                    if (err) {
+                        logger.error(err)
+                        res.status(500)
+                        res.send({
+                            error: 'internalError',
+                            message: 'Impossible de traiter la requête'
                         })
-                      }
+                    } else {
+                        logger.trace("Course ajouté avec l'id %d", (req.body.course_id))
+                        res.status(201) // 201 == Created
+                        res.location('/courses/' + req.body.course_id) // Je vois pas l'intérêt mais c'est dans la spécification REST
+                        res.send({
+                            status: 'success',
+                            id: req.body.course_id
+                        })
                     }
-                    else {
-                      logger.warn('Impossible de créer la course pour le client %d', req.body['client_id'])
-                      res.status(404)
-                      res.send({
-                        error: 'notFound',
-                        message: 'Client inexistant'
-                      })
-                    }
+                })
+            }
+        } else {
+            logger.warn('Impossible de créer la course pour le client %d', req.body['client_id'])
+            res.status(404)
+            res.send({
+                error: 'notFound',
+                message: 'Client inexistant'
+            })
+        }
     })
 })
 
@@ -652,32 +647,32 @@ app.put('/chauffeurs', (req, res) => {
 app.put('/courses', (req, res) => {
     let obj
     let chauffeurs
-    var files = ['./chauffeur.json', './courses.json']
-    async.map(files, fs.readFile, function (err, data){
+    let files = ['./chauffeur.json', './courses.json']
+    async.map(files, fs.readFile, (err, data) => {
         chauffeurs = JSON.parse(data[0])
         obj = JSON.parse(data[1])
             //let obj = require('./clients.json');
         let exists = false
         let existsC = false
         for (let index in obj.courses) {
-          if (obj.courses[index].course_id == req.body['course_id']) {
-            exists = true
-            if (!validation.isEmpty(req.body.client_id)) {
-              obj.courses[index].client_id = req.body['client_id']
+            if (obj.courses[index].course_id == req.body['course_id']) {
+                exists = true
+                if (!validation.isEmpty(req.body.client_id)) {
+                    obj.courses[index].client_id = req.body['client_id']
+                }
+                if (!validation.isEmpty(req.body.course_date)) {
+                    obj.courses[index].course_date = req.body['course_date']
+                }
+                if (!validation.isEmpty(req.body.course_depart)) {
+                    obj.courses[index].course_depart = req.body['course_depart']
+                }
+                if (!validation.isEmpty(req.body.course_arrivee)) {
+                    obj.courses[index].course_arrivee = req.body['course_arrivee']
+                }
+                if (!validation.isEmpty(req.body.chauffeur_id)) {
+                    obj.courses[index].chauffeur_id = req.body['chauffeur_id']
+                }
             }
-            if (!validation.isEmpty(req.body.course_date)) {
-              obj.courses[index].course_date = req.body['course_date']
-            }
-            if (!validation.isEmpty(req.body.course_depart)) {
-              obj.courses[index].course_depart = req.body['course_depart']
-            }
-            if (!validation.isEmpty(req.body.course_arrivee)) {
-              obj.courses[index].course_arrivee = req.body['course_arrivee']
-            }
-            if (!validation.isEmpty(req.body.chauffeur_id)) {
-              obj.courses[index].chauffeur_id = req.body['chauffeur_id']
-            }
-          }
         }
         for (let index in chauffeurs.chauffeurs) {
             if (chauffeurs.chauffeurs[index].chauffeur_id == req.body['chauffeur_id']) {
@@ -685,30 +680,30 @@ app.put('/courses', (req, res) => {
             }
         }
         if (exists && existsC) {
-          fs.writeFile('courses.json', '')
-          fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
-          if (err) {
-            logger.error(err)
-            res.status(500)
-            res.send({
-              error: 'internalError',
-              message: 'Impossible de traiter la requête'
+            fs.writeFile('courses.json', '')
+            fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
+                if (err) {
+                    logger.error(err)
+                    res.status(500)
+                    res.send({
+                        error: 'internalError',
+                        message: 'Impossible de traiter la requête'
+                    })
+                } else {
+                    logger.trace('Course %d modifiée', req.body['course_id'])
+                    res.status(200)
+                    res.send({
+                        status: 'success'
+                    })
+                }
             })
-          } else {
-              logger.trace('Course %d modifiée', req.body['course_id'])
-              res.status(200)
-              res.send({
-                status: 'success'
-              })
-            }
-          })
         } else {
             logger.warn('Impossible de modifier la course %d', req.body['course_id'])
             res.status(404)
             res.send({
-              error: 'notFound',
-              message: 'Course inexistante'
+                error: 'notFound',
+                message: 'Course inexistante'
             })
-          }
+        }
     })
 })

@@ -1,5 +1,7 @@
 'use strict'
 
+let validator = require('validator')
+
 // Ici votre code : remplacer ce module par votre code à vous
 
 function isDefined(object) {
@@ -22,7 +24,7 @@ function isValidId(id) {
 }
 
 function isEmpty(str) {
-  return validator.isEmpty(str)
+    return validator.isEmpty(str)
 }
 
 exports.isValidEmail = isValidEmail
