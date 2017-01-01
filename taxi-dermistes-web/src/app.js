@@ -7,12 +7,12 @@ let proxy = require('express-http-proxy')
 let path = require('path')
 let logger = require('tracer').colorConsole()
 
-let nunjucks = require( 'nunjucks' ) ;
-let PATH_TO_TEMPLATES = path.join(__dirname, 'resource/') ;
-nunjucks.configure( PATH_TO_TEMPLATES, {
+let nunjucks = require('nunjucks')
+let PATH_TO_TEMPLATES = path.join(__dirname, 'resource/')
+nunjucks.configure(PATH_TO_TEMPLATES, {
     autoescape: true,
     express: app
-} ) ;
+})
 
 let accessLogStream = fs.createWriteStream(path.join(__dirname, '../access.log'), {
     flags: 'a'

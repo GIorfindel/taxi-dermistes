@@ -155,6 +155,40 @@ app.get('/chauffeurs', (req, res) => {
     })
 })
 
+
+app.get('/chauffeurs/:chauffeur_id/courses', (req, res) => {
+  let listeCourses
+  let listeCoursesChauffeur = []
+  readFile('./courses.json', 'utf8').then((data) => {
+      listeCourses = JSON.parse(data)
+          //let listeUser = require('./clients.json');
+      let exists = false
+      for (let index in listeCourses.courses) {
+          logger.info(index)
+          if (listeCourses.courses[index].chauffeur_id == req.params['chauffeur_id']) {
+              listeCoursesChauffeur.push(listeCourses.courses[index])
+              logger.info(listeCoursesChauffeur)
+              exists = true
+          }
+      }
+      if (!exists) {
+          res.status(404)
+          res.json({
+              error: 'notFound',
+              message: 'Aucune course trouvée'
+          })
+          logger.warn("Aucune course trouvée pour le chauffeur  %d", req.params['chauffeur_id'])
+      }
+      else {
+        res.status(200) // Envoi le code HTTP 200 : OK
+        res.json(listeCoursesChauffeur)
+      }
+  }).catch((e) => {
+      logger.warn('Erreur : %s', e)
+  })
+})
+
+
 app.get('/courses/:course_id', (req, res) => {
     let listeCourses
     readFile('./courses.json', 'utf8').then((data) => {
