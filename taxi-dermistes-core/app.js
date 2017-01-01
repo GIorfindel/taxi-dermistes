@@ -56,7 +56,7 @@ app.post('/', (req, res) => {
 
 
 /****************************************************/
-/*				CRUD CLIENT							*/
+/*				CRUD CLIENT							                  */
 /****************************************************/
 
 /************** GET **************/
@@ -186,7 +186,6 @@ app.get('/chauffeurs/:chauffeur_id/courses', (req, res) => {
         logger.warn('Erreur : %s', e)
     })
 })
-
 
 app.get('/courses/:course_id', (req, res) => {
     let listeCourses

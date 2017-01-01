@@ -5,6 +5,23 @@ var gen = require('./general.js')
 var alerts = require('./alerts.js')
 
 
+function afficheCoursesLibres(chauffeur_id, divId) {
+    $.ajax({
+        dataType: 'json',
+        type: 'GET',
+        url: 'http://localhost:3001/api/courses/',
+        success: function(res) {
+            res["chauffeur_id"] = chauffeur_id
+            console.log(res)
+            gen.afficheTab(res, divId, "coursesLibres")
+        },
+        error: function(res, statut, erreur) {
+            alerts.setAlert('error', [gen.getError(res).message], "listerClientAlert")
+                ('Erreur : ' + gen.getError(res).message)
+        }
+    })
+}
+
 $('#reserver').on('submit', function(e) {
     e.preventDefault()
     var formData = gen.formToJSON($(this))
@@ -82,3 +99,5 @@ $('#listerCourses').on('submit', function(e) {
         }
     })
 })
+
+exports.afficheCoursesLibres = afficheCoursesLibres

@@ -1,5 +1,7 @@
 'use strict'
 
+var validation = require('./validation.js')
+
 function afficherRes(res) {
     $('#res').html('')
     $('#res').html(res)
@@ -31,7 +33,8 @@ function creerTabClient(res) {
         tab += "<tr>";
         tab += "<td>" + res[client].client_id + "</td>"
         tab += "<td>" + res[client].client_name + "</td>"
-        tab += "<td>" + res[client].client_mail + "</td></tr>"
+        tab += "<td>" + res[client].client_mail + "</td>"
+        tab += "</tr>";
     }
     tab += "</table>"
     return tab
@@ -48,7 +51,8 @@ function creerTabChauffeur(res) {
         tab += "<tr>";
         tab += "<td>" + res[chauffeur].chauffeur_id + "</td>"
         tab += "<td>" + res[chauffeur].chauffeur_name + "</td>"
-        tab += "<td>" + res[chauffeur].chauffeur_mail + "</td></tr>"
+        tab += "<td>" + res[chauffeur].chauffeur_mail + "</td>"
+        tab += "</tr>";
     }
     tab += "</table>"
     return tab
@@ -69,33 +73,36 @@ function creerTabCourses(res) {
         tab += "<td>" + res[course].course_depart + "</td>"
         tab += "<td>" + res[course].course_arrivee + "</td>"
         tab += "<td>" + res[course].chauffeur_id + "</td>"
+        tab += "</tr>";
     }
     tab += "</table>"
     return tab
 }
 
 function creerTabCoursesLibres(res) {
+  var chauffeur_id = res["chauffeur_id"]
     var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>Accepter</th><th>Refuser</th></tr>";
-    for (var course in res) {
-        /*for (info in res[client]) {
-            tab = "<td>" + res[client].info + "</td>" + tab
-        }
-        tab = "<tr>" + tab
-        tab += "</tr>"*/
+    for (var i = 0; i<res.length; i++) {
+      if(!validation.isDefined(res[i].chauffeur_id)) {
         tab += "<tr>";
-        tab += "<td>" + res[course].course_id + "</td>"
-        tab += "<td>" + res[course].client_id + "</td>"
-        tab += "<td>" + res[course].course_date + "</td>"
-        tab += "<td>" + res[course].course_depart + "</td>"
-        tab += "<td>" + res[course].course_arrivee + "</td>"
-        tab += "<td>" + res[course].chauffeur_id + "</td>"
+        tab += "<td>" + res[i].course_id + "</td>"
+        tab += "<td>" + res[i].client_id + "</td>"
+        tab += "<td>" + res[i].course_date + "</td>"
+        tab += "<td>" + res[i].course_depart + "</td>"
+        tab += "<td>" + res[i].course_arrivee + "</td>"
+        tab += "<td><button class='btn btn-primary' name='accepterCourse' value='" + res[i].course_id + "'>Accepter</button></td>"
+        tab += "<td><button class='btn btn-danger' name='refuserCourse' value='" + res[i].course_id + "'>Refuser</button></td>"
+        tab += "</tr>"
+      }
     }
     tab += "</table>"
+    tab += "<input type='hidden' name='chauffeur_id' value='"+chauffeur_id+"'>"
     return tab
 }
 
 function afficheTab(res, idSelecteur, type) {
     var objet = $("#" + idSelecteur)
+    console.log(idSelecteur)
     var tab
     objet.html("")
     if (type == "clients")
@@ -104,7 +111,10 @@ function afficheTab(res, idSelecteur, type) {
         tab = creerTabChauffeur(res)
     else if (type == "courses")
         tab = creerTabCourses(res)
+    else if (type == "coursesLibres")
+        tab = creerTabCoursesLibres(res)
     objet.append(tab)
+    objet.removeClass("hidden")
 }
 
 exports.formToJSON = formToJSON

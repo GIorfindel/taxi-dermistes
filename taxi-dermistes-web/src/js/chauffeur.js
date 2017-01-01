@@ -3,6 +3,8 @@
 var validation = require('./validation.js')
 var gen = require('./general.js')
 var alerts = require('./alerts.js')
+var courses = require('./course.js')
+
 
 $('#chercherChauffeur').on('submit', function(e) {
     e.preventDefault()
@@ -65,9 +67,10 @@ $('#chercherCoursesChauffeur').on('submit', function(e) {
             url: 'http://localhost:3001/api/chauffeurs/' + formData.chauffeur_id + "/courses",
             success: function(res) {
                 console.log(res)
-                $("#coursesChauffeur").removeClass("hidden")
-                gen.afficheTab(res, "listeCoursesChauffeur", "courses")
+                $("#listeCoursesChauffeur").removeClass("hidden")
+                gen.afficheTab(res, "listeCoursesChauffeur div", "courses")
                 alerts.setAlert('default', "", "chercherChauffeurAlert")
+                courses.afficheCoursesLibres(formData.chauffeur_id, "listeCoursesLibres")
             },
             error: function(res, statut, erreur) {
                 alerts.setAlert('error', [gen.getError(res).message], "chercherChauffeurAlert")
@@ -118,7 +121,8 @@ $('#creerC').on('submit', function(e) {
                 if (res.status == 'success') {
                     gen.afficherRes('Chauffeur ajouté. Identifiant : ' + res.id)
                     alerts.setStatusFormAll("success", idForm)
-                    alerts.setAlert('success', ["Votre inscription a bien été enregistrée ! <i class='glyphicon glyphicon-ok-circle'></i>", "Votre identifiant est " + res.id], "creerClientAlert")
+                    alerts.setAlert('success', ["Votre inscription a bien été enregistrée ! <i class='glyphicon glyphicon-ok-circle'></i>", "Votre identifiant est " + res.id],
+                     "creerClientAlert")
                 }
             },
             error: function(res, statut, erreur) {

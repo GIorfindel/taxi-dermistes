@@ -1,0 +1,11 @@
+{
+ "verbose": true,
+  "events": {
+    "exit": ""
+  },
+ "cwd": "__dirname",
+ "ext": "js",
+ "watch": ["."],
+ "delay": 1000,
+ "ignore": ["*.json"]
+}
