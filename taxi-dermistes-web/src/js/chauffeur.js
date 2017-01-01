@@ -70,14 +70,17 @@ $('#chercherCoursesChauffeur').on('submit', function(e) {
                 $("#listeCoursesChauffeur").removeClass("hidden")
                 gen.afficheTab(res, "listeCoursesChauffeur div", "courses")
                 alerts.setAlert('default', "", "chercherChauffeurAlert")
-                courses.afficheCoursesLibres(formData.chauffeur_id, "listeCoursesLibres")
             },
             error: function(res, statut, erreur) {
                 alerts.setAlert('error', [gen.getError(res).message], "chercherChauffeurAlert")
                 gen.afficherRes('Erreur : ' + gen.getError(res).message)
-                $("#coursesChauffeur").addClass("hidden")
+                $("#listeCoursesChauffeur").addClass("hidden")
             }
         })
+
+        courses.afficheCoursesLibres(formData.chauffeur_id, "listeCoursesLibres div")
+        $("#listeCoursesLibres").removeClass("hidden")
+
     } else {
         $("#coursesChauffeur").addClass("hidden")
         alerts.setAlert('error', alerts.messagesAlert, "chercherChauffeurAlert")
@@ -122,7 +125,7 @@ $('#creerC').on('submit', function(e) {
                     gen.afficherRes('Chauffeur ajouté. Identifiant : ' + res.id)
                     alerts.setStatusFormAll("success", idForm)
                     alerts.setAlert('success', ["Votre inscription a bien été enregistrée ! <i class='glyphicon glyphicon-ok-circle'></i>", "Votre identifiant est " + res.id],
-                     "creerClientAlert")
+                        "creerClientAlert")
                 }
             },
             error: function(res, statut, erreur) {
