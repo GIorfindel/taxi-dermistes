@@ -18,6 +18,13 @@ let args = parseArgs(process.argv)
 // be closed automatically when the JavaScript object is garbage collected.
 let main_window
 
+var exec = require('child_process').exec;
+
+app.on('before-quit',function()
+{
+    exec('pkill -SIGINT taxi')
+})
+
 // Quit when all windows are closed
 app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar
