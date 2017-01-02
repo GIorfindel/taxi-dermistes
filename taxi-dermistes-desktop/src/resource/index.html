@@ -1,0 +1,31 @@
+{% set title = 'Bienvenue sur Taxi-Dermistes !' %} {% extends "templates/layout.njk" %}
+
+{% block content %}
+<section>
+    <header>
+        <h3>Bienvenue sur Taxi-Dermistes</h3>
+    </header>
+
+    <article>
+        <a href="client">Espace client</a>
+        <p>Inscrivez-vous ou réservez une course avec les meilleurs taxis du marché !</p>
+    </article>
+
+    <article>
+        <a href="chauffeur">Espace chauffeur</a>
+        <p>Voir et gérer ses courses</p>
+    </article>
+
+    <article>
+        <a href="aide">Aide</a>
+        <p>Besoin d'aide ? Nous essayons de répondre à vos questions !</p>
+    </article>
+
+    <!-- A cacher -->
+    <article>
+        <a href="admin">Administration</a>
+        <p>Gestion du site</p>
+    </article>
+
+</section>
+{% endblock %}

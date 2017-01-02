@@ -1,0 +1,108 @@
+{% set title = 'Espace client' %} {% extends "templates/layout.njk" %} {% block content %}
+<section class="row" id="espaceClient">
+    <header>
+        <h3>{{title}}</h3>
+    </header>
+
+    <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <header>
+            <h4>S'inscrire</h4>
+        </header>
+
+        <form id="creer" method="post" action="" class="form-horizontal">
+            <div class="form-group">
+                <label for="client_name" class="col-sm-2 control-label">Votre nom</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input type="text" name="client_name" class="form-control" id="client_name" placeholder="Nom">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="client_mail" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon">@</span>
+                    <input type="email" name="client_mail" class="form-control" id="client_mail" placeholder="Email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 input-group">
+                    <button type="submit" class="btn btn-success" name="submitForm">S'inscrire</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div id="creerClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                    <div></div>
+                </div>
+            </div>
+        </form>
+
+    </section>
+
+    <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <header>
+            <h4>Réserver une course</h4>
+        </header>
+        <form id="reserver" method="post" action="" class="form-horizontal">
+            <div class="form-group">
+                <label for="client_id" class="col-sm-2 control-label">Votre identifiant</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input type="text" class="form-control" name="client_id" id="client_id" placeholder="Id client">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="course_date" class="col-sm-2 control-label">Date et heure de départ</label>
+                <div class="input-group date form_datetime col-sm-8" data-date-format="dd MM yyyy - hh:ii" data-link-field="dtp_input1">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input class="form-control" size="16" type="text" value="" name="course_date0" readonly id="course_date">
+                    <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                </div>
+                <input id="dtp_input1" value="" type="hidden" name="course_date">
+
+            </div>
+
+            <div class="form-group">
+                <label for="course_depart" class="col-sm-2 control-label">Lieu de départ</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                    <input type="text" class="form-control" id="course_depart" name="course_depart" placeholder="Départ">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="course_arrivee" class="col-sm-2 control-label">Lieu d'arrivée</label>
+                <div class="col-sm-8 input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                    <input type="text" class="form-control" id="course_arrivee" name="course_arrivee" placeholder="Départ">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 input-group">
+                    <button type="submit" name="submitForm" class="btn btn-success">Réserver</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div id="reserverAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                    <div></div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+  <!--  <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <header>
+            <h4>Résultat</h4></header>
+        <div id="res"></div>
+    </section>
+    <div id="res"></div>
+  -->
+
+</section>
+{% endblock %}
