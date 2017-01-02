@@ -13,6 +13,7 @@
   },
   "scripts": {
     "start": "node src/app.js & electron .",
+    "stop": "pkill --signal SIGINT taxi",
     "test": "npm run lint",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
