@@ -1,0 +1,26 @@
+{% set title = 'Gestion des courses' %}{% set admin = '../' %} {% extends "layout.njk" %}
+
+{% block content %}
+<section>
+    <header>
+        <h3>Gestion des courses</h3></header>
+        <section>
+            <header>
+                <h3>Afficher toutes les courses</h3></header>
+            <form id="listerCourses" method="get" action="" class="form-horizontal">
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 input-group">
+                        <button type="submit" class="btn btn-success" name="submitForm">Afficher</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div id="listerClientAlert" class="col-sm-offset-2 col-sm-8 row hidden alert alert-dismissible" role="alert">
+                        <div></div>
+                    </div>
+                </div>
+            </form>
+        </section>
+</section>
+{% endblock %}

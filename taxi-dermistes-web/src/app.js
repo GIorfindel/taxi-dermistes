@@ -24,11 +24,10 @@ app.use(morgan('combined', {
 app.use('/api', proxy('http://localhost:3000'))
 app.use(express.static('resource'))
 app.use('/resource', express.static('resource'))
-app.use('/resource/js', express.static(path.join(__dirname, 'resource/js')))
-app.use('/resource/css', express.static(path.join(__dirname, 'resource/css')))
-app.use('/resource/img', express.static(path.join(__dirname, 'resource/img')))
-app.use('/resource/bootstrap', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/css/'))) // redirection vers le CSS bootstrap
-app.use('/resource/fonts', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/fonts/'))) // Pour les glyphicon de bootstrap
+app.use('/js', express.static(path.join(__dirname, 'resource/js')))
+app.use('/css', express.static(path.join(__dirname, 'resource/css')))
+app.use('/img', express.static(path.join(__dirname, 'resource/img')))
+app.use('/fonts', express.static(path.join(__dirname, 'resource/fonts/'))) // Pour les glyphicon de bootstrap
 
 
 //PORT DU SERVEUR
@@ -47,30 +46,34 @@ app.get('/', (req, res) => {
     return res.render('index.html')
 })
 
-app.get('/client/', (req, res) => {
+app.get('/index.html', (req, res) => {
+    return res.render('index.html')
+})
+
+app.get('/client.html/', (req, res) => {
     return res.render(path.join(__dirname, '/resource/client.html'))
 })
 
-app.get('/chauffeur/', (req, res) => {
+app.get('/chauffeur.html/', (req, res) => {
     return res.render(path.join(__dirname, '/resource/chauffeur.html'))
 })
 
-app.get('/aide/', (req, res) => {
+app.get('/aide.html/', (req, res) => {
     return res.render(path.join(__dirname, '/resource/aide.html'))
 })
 
-app.get('/admin/', (req, res) => {
+app.get('/admin.html/', (req, res) => {
     return res.render(path.join(__dirname, '/resource/admin/index.html'))
 })
 
-app.get('/admin/clients', (req, res) => {
+app.get('/admin/clients.html', (req, res) => {
     return res.render(path.join(__dirname, '/resource/admin/clients.html'))
 })
 
-app.get('/admin/chauffeurs', (req, res) => {
+app.get('/admin/chauffeurs.html', (req, res) => {
     return res.render(path.join(__dirname, '/resource/admin/chauffeurs.html'))
 })
 
-app.get('/admin/courses', (req, res) => {
+app.get('/admin/courses.html', (req, res) => {
     return res.render(path.join(__dirname, '/resource/admin/courses.html'))
 })

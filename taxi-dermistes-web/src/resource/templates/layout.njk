@@ -6,14 +6,14 @@
 <head>
     <meta charset="utf-8">
     <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="/resource/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ admin }}css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ admin }}css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ admin }}css/style.css">
 </head>
 
 <body>
 
-    {% include "templates/navbar.html" %}
+    {% include "navbar.html" %}
 
     <div class="container" id="main">
 
@@ -33,9 +33,10 @@
         </div>
     </footer>
 
-    <script src="/resource/js/bundle.js"></script>
-    <script src="/resource/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="/resource/js/locales/bootstrap-datetimepicker.fr.js"></script>
+    <script src="{{ admin }}js/route.js"></script>
+    <script src="{{ admin }}js/bundle.js"></script>
+    <script src="{{ admin }}js/bootstrap-datetimepicker.min.js"></script>
+    <script src="{{ admin }}js/locales/bootstrap-datetimepicker.fr.js"></script>
     <script type="text/javascript">
         $('.form_datetime').datetimepicker({
             language:  'fr',

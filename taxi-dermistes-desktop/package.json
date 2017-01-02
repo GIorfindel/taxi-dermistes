@@ -1,8 +1,8 @@
 {
-  "name": "taxi-dermistes-desktop",
-  "description": "Reservation de taxis (desktop)",
+  "name": "taxi-desktop",
+  "description": "taxi-desktop using Electron.js",
   "version": "1.0.0",
-  "author": "Florian Choiselle, Christopher Goodman",
+  "author": "Aful",
   "license": "MIT",
   "engines": {
     "node": ">=4.5.0"
@@ -12,37 +12,29 @@
     "url": "https://framagit.org/aful/taxi-desktop.git"
   },
   "scripts": {
-    "start": "node src/app.js & electron .",
-    "stop": "pkill --signal SIGINT taxi",
+    "start": "electron .",
     "test": "npm run lint",
+    "build:html": "gulp nunjucks",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
-  "keywords": [
-    "taxi",
-    "desktop"
-  ],
   "main": "src/main.js",
   "dependencies": {
     "axios": "0.15.3",
     "bluebird": "3.4.6",
-    "bootstrap": "3.3.7",
     "electron": "1.4.10",
-    "express": "4.14.0",
-    "express-http-proxy": "0.10.1",
-    "jquery": "3.1.1",
+    "express-http-proxy": "^0.10.1",
     "minimist": "1.2.0",
-    "morgan": "1.7.0",
-    "nunjucks": "3.0.0",
-    "tracer": "0.8.7",
-    "validator": "6.2.0"
+    "morgan": "^1.7.0",
+    "tracer": "0.8.7"
   },
   "devDependencies": {
-    "browserify": "13.1.1",
+    "browser-sync": "^2.18.5",
     "electron-mocha": "3.2.1",
     "eslint": "3.11.1",
     "eslint-config-usecases": "1.1.0",
-    "must": "0.13.2",
-    "nodemon": "1.11.0"
+    "gulp": "^3.9.1",
+    "gulp-nunjucks-render": "^2.0.0",
+    "must": "0.13.2"
   }
 }

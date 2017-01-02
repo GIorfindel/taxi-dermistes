@@ -8,6 +8,7 @@
     "start:watch": "npm run build && nodemon src/app.js",
     "build": "npm run build:js",
     "build:js": "browserify src/ui.js > src/resource/js/bundle.js",
+    "build:html": "gulp nunjucks",
     "test": "npm run lint",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
@@ -29,9 +30,12 @@
     "validator": "6.2.0"
   },
   "devDependencies": {
+    "browser-sync": "2.18.5",
     "browserify": "13.1.1",
     "eslint": "3.12.2",
     "eslint-config-usecases": "1.1.0",
+    "gulp": "3.9.1",
+    "gulp-nunjucks-render": "2.0.0",
     "nodemon": "1.11.0"
   }
 }

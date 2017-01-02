@@ -34,7 +34,7 @@ app.on('ready', () => {
     // Here is how to hide the menu
     //main_window.setMenu(null)
 
-	main_window.loadURL(path.join('http://localhost:3001'))
+    main_window.loadURL(path.join('file://', __dirname, 'resource/index.html'))
 
     if (args['debug']) { // cf. README
         main_window.openDevTools()
