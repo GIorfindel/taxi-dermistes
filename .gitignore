@@ -1,3 +1,6 @@
 /**/node_modules/
 /**/bundle.js
-/taxi-dermistes-web/access.log
+/**/access.log
+/**/clients.json
+/**/courses.json
+/**/chauffeur.json
