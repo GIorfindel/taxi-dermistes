@@ -43,8 +43,8 @@ $('#creer').on('submit', function(e) {
                 }
             },
             error: function(res, statut, erreur) {
-                gen.afficherRes('Erreur : ' + getError(res).message)
-                alerts.setAlert('error', [getError(res).message], "creerClientAlert")
+                gen.afficherRes('Erreur : ' + gen.gen.getError(res).message)
+                alerts.setAlert('error', [gen.getError(res).message], "creerClientAlert")
             }
         })
     }
@@ -84,8 +84,8 @@ $('#chercher').on('submit', function(e) {
                 alerts.setAlert('success', ["Identifiant : " + res.client_id, "Nom : " + res.client_name, "Email : " + res.client_mail], "chercherClientAlert")
             },
             error: function(res, statut, erreur) {
-                alerts.setAlert('error', [getError(res).message], "chercherClientAlert")
-                gen.afficherRes('Erreur : ' + getError(res).message)
+                alerts.setAlert('error', [gen.getError(res).message], "chercherClientAlert")
+                gen.afficherRes('Erreur : ' + gen.getError(res).message)
             }
         })
     } else {
@@ -106,8 +106,8 @@ $('#lister').on('submit', function(e) {
             gen.afficheTab(res, "res", "clients")
         },
         error: function(res, statut, erreur) {
-            alerts.setAlert('error', [getError(res).message], "listerClientAlert")
-                ('Erreur : ' + getError(res).message)
+            alerts.setAlert('error', [gen.getError(res).message], "listerClientAlert")
+                ('Erreur : ' + gen.getError(res).message)
         }
     })
 })
@@ -156,8 +156,8 @@ $('#modifier').on('submit', function(e) {
                 }
             },
             error: function(res, statut, erreur) {
-                alerts.setAlert('error', [getError(res).message], "modifierClientAlert")
-                gen.afficherRes('Erreur : ' + getError(res).message)
+                alerts.setAlert('error', [gen.getError(res).message], "modifierClientAlert")
+                gen.afficherRes('Erreur : ' + gen.getError(res).message)
             }
         })
     } else {
@@ -194,8 +194,8 @@ $('#supprimer').on('submit', function(e) {
                 }
             },
             error: function(res, statut, erreur) {
-                alerts.setAlert('error', [getError(res).message], "supprimerClientAlert")
-                gen.afficherRes('Erreur : ' + getError(res).message)
+                alerts.setAlert('error', [gen.getError(res).message], "supprimerClientAlert")
+                gen.afficherRes('Erreur : ' + gen.getError(res).message)
             }
         })
     } else {
