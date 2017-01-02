@@ -26,7 +26,7 @@ $('#chercherChauffeur').on('submit', function(e) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
-            url: 'http://localhost:3001/api/chauffeurs/' + formData.chauffeur_id,
+            url: route.route+'chauffeurs/' + formData.chauffeur_id,
             success: function(res) {
                 console.log(res)
                 alerts.setAlert('success', [], "chercherChauffeurAlert")
@@ -64,7 +64,7 @@ $('#chercherCoursesChauffeur').on('submit', function(e) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
-            url: 'http://localhost:3001/api/chauffeurs/' + formData.chauffeur_id + "/courses",
+            url: route.route+'chauffeurs/' + formData.chauffeur_id + "/courses",
             success: function(res) {
                 console.log(res)
                 $("#listeCoursesChauffeur").removeClass("hidden")
@@ -115,7 +115,7 @@ $('#creerC').on('submit', function(e) {
     //ETAPE 2 : Envoi des données au serveur
     if (alerts.countError == 0) {
         $.ajax({
-            url: 'http://localhost:3001/api/chauffeurs',
+            url: route.route+'chauffeurs',
             type: 'POST',
             dataType: 'json', // On désire recevoir du JSON
             contentType: 'application/json; charset=utf-8',
@@ -149,7 +149,7 @@ $('#listerC').on('submit', function(e) {
     $.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://localhost:3001/api/chauffeurs/',
+        url: route.route+'chauffeurs/',
         success: function(res) {
             alerts.setAlert('nocolor', [gen.creerTabChauffeur(res)], "listerClientAlert")
             gen.afficheTab(res, "res", "chauffeurs")

@@ -9,7 +9,7 @@ function afficheCoursesLibres(chauffeur_id, divId) {
     $.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://localhost:3001/api/courses/',
+        url: route.route+'courses/',
         success: function(res) {
             res["chauffeur_id"] = chauffeur_id
             console.log(res)
@@ -60,7 +60,7 @@ $('#reserver').on('submit', function(e) {
 
     if (alerts.countError == 0) {
         $.ajax({
-            url: 'http://localhost:3001/api/courses',
+            url: route.route+'courses',
             type: 'POST',
             dataType: 'json', // On désire recevoir du JSON
             contentType: 'application/json; charset=utf-8',
@@ -88,7 +88,7 @@ $('#listerCourses').on('submit', function(e) {
     $.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://localhost:3001/api/courses/',
+        url: route.route+'courses/',
         success: function(res) {
             alerts.setAlert('nocolor', [gen.creerTabCourses(res)], "listerClientAlert")
             gen.afficheTab(res, "res", "courses")
