@@ -1,16 +1,18 @@
-var gulp = require('gulp');
-var nunjucksRender = require('gulp-nunjucks-render'); // importing the plugin
+'use strict'
 
-gulp.task('serve', function() {
-    console.log('running server');
-});
+let gulp = require('gulp')
+let nunjucksRender = require('gulp-nunjucks-render') // importing the plugin
+
+gulp.task('serve', () => {
+    console.log('running server')
+})
 
 // writing up the gulp nunjucks task
-gulp.task('nunjucks', function() {
-    console.log('nunjucking');
+gulp.task('nunjucks', () => {
+    console.log('nunjucking')
 
     // configuring the templates folder for nunjucks
-    nunjucksRender.nunjucks.configure(['src/resource/templates/']);
+    nunjucksRender.nunjucks.configure(['src/resource/templates/'])
 
     // get the pages files
     gulp.src('src/resource/pages/*.+(html)')
@@ -26,7 +28,7 @@ gulp.task('nunjucks', function() {
             watch: false,
         }))
         .pipe(gulp.dest('src/resource/admin'))
-});
+})
 
 //default task to be run with gulp
-gulp.task('default', ['serve']);
+gulp.task('default', ['serve'])

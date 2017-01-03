@@ -683,7 +683,7 @@ app.put('/courses', (req, res) => {
                 }
                 if (validation.isDefined(req.body.refus) && !validation.isEmpty(req.body.refus) && validation.isDefined(req.body.chauffeur_id) && !validation.isEmpty(req.body.chauffeur_id)) {
                     obj.courses[index].refus.push(req.body.chauffeur_id)
-                    logger.info("refus effectué")
+                    logger.info('refus effectué')
                 }
 
             }
