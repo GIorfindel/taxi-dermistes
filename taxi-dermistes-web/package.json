@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "start:watch": "npm run build && nodemon src/app.js",
-    "build": "npm run build:js",
+    "build": "npm run build:js && npm run build:html",
     "build:js": "browserify src/ui.js > src/resource/js/bundle.js",
     "build:html": "gulp nunjucks",
     "test": "npm run lint",
