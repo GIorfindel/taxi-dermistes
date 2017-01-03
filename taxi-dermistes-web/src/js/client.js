@@ -30,7 +30,7 @@ $('#creer').on('submit', function(e) {
     //ETAPE 2 : Envoi des données au serveur
     if (alerts.countError == 0) {
         $.ajax({
-            url: 'http://localhost:3001/api/clients',
+            url: route.route+'clients',
             type: 'POST',
             dataType: 'json', // On désire recevoir du JSON
             contentType: 'application/json; charset=utf-8',
@@ -43,7 +43,7 @@ $('#creer').on('submit', function(e) {
                 }
             },
             error: function(res, statut, erreur) {
-                gen.afficherRes('Erreur : ' + gen.gen.getError(res).message)
+                gen.afficherRes('Erreur : ' + gen.getError(res).message)
                 alerts.setAlert('error', [gen.getError(res).message], "creerClientAlert")
             }
         })
@@ -78,7 +78,7 @@ $('#chercher').on('submit', function(e) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
-            url: 'http://localhost:3001/api/clients/' + formData.client_id,
+            url: route.route+'clients/' + formData.client_id,
             success: function(res) {
                 console.log(res)
                 alerts.setAlert('success', ["Identifiant : " + res.client_id, "Nom : " + res.client_name, "Email : " + res.client_mail], "chercherClientAlert")
@@ -100,7 +100,7 @@ $('#lister').on('submit', function(e) {
     $.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'http://localhost:3001/api/clients/',
+        url: route.route+'clients/',
         success: function(res) {
             alerts.setAlert('nocolor', [gen.creerTabClient(res)], "listerClientAlert")
             gen.afficheTab(res, "res", "clients")
@@ -144,7 +144,7 @@ $('#modifier').on('submit', function(e) {
     if (alerts.countError == 0) {
 
         $.ajax({
-            url: 'http://localhost:3001/api/clients',
+            url: route.route+'clients',
             type: 'PUT',
             dataType: 'json', // On désire recevoir du JSON
             contentType: 'application/json; charset=utf-8',
@@ -182,7 +182,7 @@ $('#supprimer').on('submit', function(e) {
 
     if (alerts.countError == 0) {
         $.ajax({
-            url: 'http://localhost:3001/api/clients',
+            url: route.route+'clients',
             type: 'DELETE',
             dataType: 'json', // On désire recevoir du JSON
             contentType: 'application/json; charset=utf-8',
