@@ -135,6 +135,7 @@ $('#listeCoursesLibres').on('click', "#modifierCoursesChauffeur button[type='sub
                         action = "refusée"
                     }
                     alerts.setAlert('success', ["Course " + button.value + " " + action + " !"], "mainAlert")
+                    $("#chercherCoursesChauffeur").submit()
                 }
             },
             error: function(res, statut, erreur) {
