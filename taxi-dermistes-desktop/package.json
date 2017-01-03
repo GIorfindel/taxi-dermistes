@@ -12,7 +12,9 @@
     "url": "https://framagit.org/aful/taxi-desktop.git"
   },
   "scripts": {
+    "prestart":"cp src/route.js src/resource/js",
     "start": "electron .",
+    "postsart":"rm src/resource/js/route.js",
     "test": "npm run lint",
     "build:html": "gulp nunjucks",
     "lint": "eslint .",

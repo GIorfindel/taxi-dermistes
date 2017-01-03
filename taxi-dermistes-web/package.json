@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/app.js",
     "start:watch": "npm run build && nodemon src/app.js",
+    "prebuild":"rm -r ../taxi-dermistes-desktop/src/resource",
     "build": "npm run build:js",
+    "postbuild":"cp -r src/resource ../taxi-dermistes-desktop/src/",
     "build:js": "browserify src/ui.js > src/resource/js/bundle.js",
     "build:html": "gulp nunjucks",
     "test": "npm run lint",
