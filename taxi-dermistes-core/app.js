@@ -161,7 +161,7 @@ app.get('/chauffeurs/:chauffeur_id/courses', (req, res) => {
     let listeCoursesChauffeur = []
     readFile('./courses.json', 'utf8').then((data) => {
         listeCourses = JSON.parse(data)
-          //let listeUser = require('./clients.json');
+            //let listeUser = require('./clients.json');
         let exists = false
         for (let index in listeCourses.courses) {
             logger.info(index)
@@ -366,7 +366,7 @@ app.post('/courses', (req, res) => {
                 })
             } else {
                 req.body.course_id = obj.libre
-                req.body.refus=[]
+                req.body.refus = []
                 obj.courses.push(req.body)
                 obj.libre = obj.libre + 1
                 fs.writeFile('courses.json', '')
@@ -647,6 +647,15 @@ app.put('/chauffeurs', (req, res) => {
 app.put('/courses', (req, res) => {
     let obj
     let chauffeurs
+    let course_id
+    if (validation.isDefined(req.body.accepter) && !validation.isEmpty(req.body.accepter)) { // traitement pour accepter
+        course_id = req.body.accepter
+    } else if (validation.isDefined(req.body.refus) && !validation.isEmpty(req.body.refus)) {
+        course_id = req.body.refus
+    } else {
+        course_id = req.body['course_id']
+    }
+    logger.info(req.body)
     let files = ['./chauffeur.json', './courses.json']
     async.map(files, fs.readFile, (err, data) => {
         chauffeurs = JSON.parse(data[0])
@@ -655,38 +664,38 @@ app.put('/courses', (req, res) => {
         let exists = false
         let existsC = false
         for (let index in obj.courses) {
-            if (obj.courses[index].course_id == req.body['course_id']) {
+            if (obj.courses[index].course_id == course_id) {
                 exists = true
-                if (!validation.isEmpty(req.body.client_id)) {
+                if (validation.isDefined(req.body.client_id) && !validation.isEmpty(req.body.client_id)) {
                     obj.courses[index].client_id = req.body['client_id']
                 }
-                if (!validation.isEmpty(req.body.course_date)) {
+                if (validation.isDefined(req.body.course_date) && !validation.isEmpty(req.body.course_date)) {
                     obj.courses[index].course_date = req.body['course_date']
                 }
-                if (!validation.isEmpty(req.body.course_depart)) {
+                if (validation.isDefined(req.body.course_depart) && !validation.isEmpty(req.body.course_depart)) {
                     obj.courses[index].course_depart = req.body['course_depart']
                 }
-                if (!validation.isEmpty(req.body.course_arrivee)) {
+                if (validation.isDefined(req.body.course_arrivee) && !validation.isEmpty(req.body.course_arrivee)) {
                     obj.courses[index].course_arrivee = req.body['course_arrivee']
                 }
-                if (typeof req.body.chauffeur_id != 'undefined' && !validation.isEmpty(req.body.chauffeur_id)) {
+                if (validation.isDefined(req.body.chauffeur_id) && !validation.isEmpty(req.body.chauffeur_id) && !validation.isDefined(req.body.refus)) {
                     obj.courses[index].chauffeur_id = req.body['chauffeur_id']
                 }
-                if (typeof req.body.refus != 'undefined' || !validation.isEmpty(req.body.refus)) {
-                    obj.courses[index].refus.push(req.body['refus'])
+                if (validation.isDefined(req.body.refus) && !validation.isEmpty(req.body.refus) && validation.isDefined(req.body.chauffeur_id) && !validation.isEmpty(req.body.chauffeur_id)) {
+                    obj.courses[index].refus.push(req.body.chauffeur_id)
+                    logger.info("refus effectué")
                 }
 
             }
         }
-        if(typeof req.body.chauffeur_id != 'undefined')
-        {
-        for (let index in chauffeurs.chauffeurs) {
-            if (chauffeurs.chauffeurs[index].chauffeur_id == req.body['chauffeur_id']) {
-                existsC = true
+        if (typeof req.body.chauffeur_id != 'undefined') {
+            for (let index in chauffeurs.chauffeurs) {
+                if (chauffeurs.chauffeurs[index].chauffeur_id == req.body['chauffeur_id']) {
+                    existsC = true
+                }
             }
         }
-        }
-        if (exists && (existsC || typeof req.body.chauffeur_id=='undefined')) {
+        if (exists && (existsC || typeof req.body.chauffeur_id == 'undefined')) {
             fs.writeFile('courses.json', '')
             fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
                 if (err) {
@@ -697,7 +706,7 @@ app.put('/courses', (req, res) => {
                         message: 'Impossible de traiter la requête'
                     })
                 } else {
-                    logger.trace('Course %d modifiée', req.body['course_id'])
+                    logger.trace('Course %d modifiée', course_id)
                     res.status(200)
                     res.send({
                         status: 'success'
@@ -705,7 +714,7 @@ app.put('/courses', (req, res) => {
                 }
             })
         } else {
-            logger.warn('Impossible de modifier la course %d', req.body['course_id'])
+            logger.warn('Impossible de modifier la course %d', course_id)
             res.status(404)
             res.send({
                 error: 'notFound',

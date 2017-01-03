@@ -80,22 +80,24 @@ function creerTabCourses(res) {
 }
 
 function creerTabCoursesLibres(res) {
-  var chauffeur_id = res["chauffeur_id"]
-    var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>Accepter</th><th>Refuser</th></tr>";
-    for (var i = 0; i<res.length; i++) {
-      if(!validation.isDefined(res[i].chauffeur_id) && !res[i].refus.includes(chauffeur_id)) {
-        tab += "<tr>";
-        tab += "<td>" + res[i].course_id + "</td>"
-        tab += "<td>" + res[i].client_id + "</td>"
-        tab += "<td>" + res[i].course_date + "</td>"
-        tab += "<td>" + res[i].course_depart + "</td>"
-        tab += "<td>" + res[i].course_arrivee + "</td>"
-        tab += "<td><form id='modfierCoursesChauffeur' method='post' action='' class='form-horizontal'><button class='btn btn-primary' onclick='res[i].chauffeur_id=chauffeur_id' name='accepterCourse' value='" + res[i] + "'>Accepter</button></td>"
-        tab += "<td><button class='btn btn-danger' onclick='res[i].refus=chauffeur_id' name='refuserCourse' value='" + res[i] + "'>Refuser</button></form></td>"
-        tab += "</tr>"
-      }
+    var chauffeur_id = res["chauffeur_id"]
+    var tab = "<form id='modifierCoursesChauffeur' method='post' action='' class='form-horizontal'>"
+    tab += "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>Accepter</th><th>Refuser</th></tr>";
+    for (var i = 0; i < res.length; i++) {
+        if (!validation.isDefined(res[i].chauffeur_id) && !res[i].refus.includes(chauffeur_id)) {
+            tab += "<tr>";
+            tab += "<td>" + res[i].course_id + "</td>"
+            tab += "<td>" + res[i].client_id + "</td>"
+            tab += "<td>" + res[i].course_date + "</td>"
+            tab += "<td>" + res[i].course_depart + "</td>"
+            tab += "<td>" + res[i].course_arrivee + "</td>"
+            tab += "<td><button class='btn btn-primary' type='submit' name='accepter' value='" + res[i].course_id + "'>Accepter</button></td>"
+            tab += "<td><button class='btn btn-danger' type='submit' name='refus' value='" + res[i].course_id + "'>Refuser</button></td>"
+            tab += "</tr>"
+        }
     }
-    tab += "</table>"
+    tab += "<input type='hidden' name='chauffeur_id' value='"+ chauffeur_id +"'>"
+    tab += "</table></form>"
     return tab
 }
 
