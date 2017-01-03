@@ -366,6 +366,7 @@ app.post('/courses', (req, res) => {
                 })
             } else {
                 req.body.course_id = obj.libre
+                req.body.refus=[]
                 obj.courses.push(req.body)
                 obj.libre = obj.libre + 1
                 fs.writeFile('courses.json', '')
@@ -668,17 +669,24 @@ app.put('/courses', (req, res) => {
                 if (!validation.isEmpty(req.body.course_arrivee)) {
                     obj.courses[index].course_arrivee = req.body['course_arrivee']
                 }
-                if (!validation.isEmpty(req.body.chauffeur_id)) {
+                if (typeof req.body.chauffeur_id != 'undefined' && !validation.isEmpty(req.body.chauffeur_id)) {
                     obj.courses[index].chauffeur_id = req.body['chauffeur_id']
                 }
+                if (typeof req.body.refus != 'undefined' || !validation.isEmpty(req.body.refus)) {
+                    obj.courses[index].refus.push(req.body['refus'])
+                }
+
             }
         }
+        if(typeof req.body.chauffeur_id != 'undefined')
+        {
         for (let index in chauffeurs.chauffeurs) {
             if (chauffeurs.chauffeurs[index].chauffeur_id == req.body['chauffeur_id']) {
                 existsC = true
             }
         }
-        if (exists && existsC) {
+        }
+        if (exists && (existsC || typeof req.body.chauffeur_id=='undefined')) {
             fs.writeFile('courses.json', '')
             fs.appendFile('courses.json', JSON.stringify(obj) + '\n', (err) => {
                 if (err) {

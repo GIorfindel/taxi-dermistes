@@ -83,7 +83,7 @@ function creerTabCoursesLibres(res) {
   var chauffeur_id = res["chauffeur_id"]
     var tab = "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>Accepter</th><th>Refuser</th></tr>";
     for (var i = 0; i<res.length; i++) {
-      if(!validation.isDefined(res[i].chauffeur_id)) {
+      if(!validation.isDefined(res[i].chauffeur_id) && !res[i].refus.includes(chauffeur_id)) {
         tab += "<tr>";
         tab += "<td>" + res[i].course_id + "</td>"
         tab += "<td>" + res[i].client_id + "</td>"
