@@ -90,13 +90,12 @@ function creerTabCoursesLibres(res) {
         tab += "<td>" + res[i].course_date + "</td>"
         tab += "<td>" + res[i].course_depart + "</td>"
         tab += "<td>" + res[i].course_arrivee + "</td>"
-        tab += "<td><button class='btn btn-primary' name='accepterCourse' value='" + res[i].course_id + "'>Accepter</button></td>"
-        tab += "<td><button class='btn btn-danger' name='refuserCourse' value='" + res[i].course_id + "'>Refuser</button></td>"
+        tab += "<td><form id='modfierCoursesChauffeur' method='post' action='' class='form-horizontal'><button class='btn btn-primary' onclick='res[i].chauffeur_id=chauffeur_id' name='accepterCourse' value='" + res[i] + "'>Accepter</button></td>"
+        tab += "<td><button class='btn btn-danger' onclick='res[i].refus=chauffeur_id' name='refuserCourse' value='" + res[i] + "'>Refuser</button></form></td>"
         tab += "</tr>"
       }
     }
     tab += "</table>"
-    tab += "<input type='hidden' name='chauffeur_id' value='"+chauffeur_id+"'>"
     return tab
 }
 
