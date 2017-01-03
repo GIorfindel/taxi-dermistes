@@ -81,10 +81,12 @@ function creerTabCourses(res) {
 
 function creerTabCoursesLibres(res) {
     var chauffeur_id = res["chauffeur_id"]
+    var count  = 0
     var tab = "<form id='modifierCoursesChauffeur' method='post' action='' class='form-horizontal'>"
     tab += "<table class='table table-hover table-condensed table-bordered'><tr><th>id</th><th>client</th><th>date</th><th>départ</th><th>arrivée</th><th>Accepter</th><th>Refuser</th></tr>";
     for (var i = 0; i < res.length; i++) {
         if (!validation.isDefined(res[i].chauffeur_id) && !res[i].refus.includes(chauffeur_id)) {
+            count++;
             tab += "<tr>";
             tab += "<td>" + res[i].course_id + "</td>"
             tab += "<td>" + res[i].client_id + "</td>"
@@ -98,6 +100,9 @@ function creerTabCoursesLibres(res) {
     }
     tab += "<input type='hidden' name='chauffeur_id' value='"+ chauffeur_id +"'>"
     tab += "</table></form>"
+    if(count == 0) {
+      tab = "<h4>Aucune course disponible</h4>"
+    }
     return tab
 }
 
