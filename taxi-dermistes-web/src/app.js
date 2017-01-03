@@ -62,7 +62,7 @@ app.get('/aide.html/', (req, res) => {
     return res.render(path.join(__dirname, '/resource/aide.html'))
 })
 
-app.get('/admin.html/', (req, res) => {
+app.get('/admin', (req, res) => {
     return res.render(path.join(__dirname, '/resource/admin/index.html'))
 })
 
