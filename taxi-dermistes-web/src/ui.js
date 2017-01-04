@@ -5,7 +5,7 @@ global.jQuery = require('jquery')
 require('bootstrap')
 global.nunjucks = require('nunjucks')
 
-require('./js/validation.js')
+require('taxi-dermistes-common')
 require('./js/general.js')
 require('./js/alerts.js')
 require('./js/client.js')

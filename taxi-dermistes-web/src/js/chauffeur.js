@@ -1,6 +1,6 @@
 'use strict'
 
-var validation = require('./validation.js')
+var validation = require('taxi-dermistes-common').validation
 var gen = require('./general.js')
 var alerts = require('./alerts.js')
 var courses = require('./course.js')
