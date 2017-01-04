@@ -1,0 +1,23 @@
+{
+  "name": "taxi-dermistes-common",
+  "version": "1.0.0",
+  "description": "Reservation de taxis (core)",
+  "author": "Florian Choiselle, Christopher Goodman",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.js",
+    "start:watch": "nodemon app.js",
+    "build": "npm run build:js",
+    "build:js": "browserify ui.js > bundle.js",
+    "test": "npm run lint",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "keywords": [
+    "taxi",
+    "common"
+  ],
+  "dependencies": {
+    "validator": "6.2.0"
+  }
+}
