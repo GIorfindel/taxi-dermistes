@@ -1,6 +1,6 @@
 'use strict'
 
-var validation = require('./validation.js')
+var validation = require('taxi-dermistes-common').validation
 
 function afficherRes(res) {
     $('#res').html('')
