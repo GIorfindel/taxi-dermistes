@@ -29,7 +29,7 @@ If you want a web access:
 cd taxi-dermistes-web
 npm start
 ```
-Then go to that [url] (localhost:3001) in a browser.
+Then go to that [url](http://localhost:3001/) in a browser.
 
 If you want a desktop access
 ```shell
