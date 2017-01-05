@@ -4,7 +4,7 @@
 npm version 4.5.0
 
 ## Install
-Go to JSAU folder and run :
+Go to the root folder and run :
 ```shell
 cd taxi-dermistes-common
 npm link
