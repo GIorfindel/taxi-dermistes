@@ -10,10 +10,12 @@ cd taxi-dermistes-common
 npm link
 npm install
 cd ../taxi-dermistes-core
+npm link taxi-dermistes-common
 npm install
 cd ../taxi-dermistes-web
 npm install
-cd ../taxi-dermistes-dektop
+npm run build
+cd ../taxi-dermistes-desktop
 npm install
 ```
 
