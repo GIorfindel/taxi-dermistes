@@ -43,4 +43,13 @@ After modifying files in taxi-dermistes-web :
 npm run build
 ```
 
+## Autocomplete address
+If you have an API key for google maps and want to enable autocomplete address form :
++ Uncomment the line importing maps API in  taxi-dermistes/taxi-dermistes-web/src/resource/templates/layout.njk file
++ Replace "yourKey" by your API key
++ Uncomment the initialize function and the google maps event listener in the   taxi-dermistes/taxi-dermistes-web/src/js/course.js
+ file
++ Do a build of taxi-dermistes-web
+
+
 ###### by C and F
