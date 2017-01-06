@@ -4,6 +4,13 @@ var validation = require('taxi-dermistes-common').validation
 var gen = require('./general.js')
 var alerts = require('./alerts.js')
 
+/*function initialize() {
+  var input = document.getElementById('course_depart');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+  var input2 = document.getElementById('course_arrivee');
+  var autocomplete2 = new google.maps.places.Autocomplete(input2);
+}
+google.maps.event.addDomListener(window, 'load', initialize);*/
 
 function afficheCoursesLibres(chauffeur_id, divId) {
     $.ajax({
