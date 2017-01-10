@@ -1,0 +1,7 @@
+"scripts": {
+  "test": "npm run test1 && npm run test2 && npm run test3 && npm run test4",
+  "test1": "cd taxi-dermistes-common && npm run test",
+  "test2": "cd taxi-dermistes-core && npm run test",
+  "test3": "cd taxi-dermistes-web && npm run test",
+  "test4": "cd taxi-dermistes-desktop && npm run test"
+}
