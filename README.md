@@ -1,4 +1,4 @@
-https://travis-ci.org/GIorfindel/taxi-dermistes.svg?branch=master
+![Build status](https://travis-ci.org/GIorfindel/taxi-dermistes.svg?branch=master)
 # Gestion de taxis
 
 ## Requirements
