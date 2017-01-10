@@ -1,5 +1,10 @@
 {
   "scripts": {
+  "install": "npm run test1 && npm run test2 && npm run test3 && npm run test4",
+  "install1": "cd taxi-dermistes-common && npm install",
+  "install2": "cd taxi-dermistes-core && npm install",
+  "install3": "cd taxi-dermistes-web && npm install",
+  "install4": "cd taxi-dermistes-desktop && npm install",
   "test": "npm run test1 && npm run test2 && npm run test3 && npm run test4",
   "test1": "cd taxi-dermistes-common && npm run test",
   "test2": "cd taxi-dermistes-core && npm run test",
