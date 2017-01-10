@@ -8,9 +8,7 @@ Go to the root folder and run :
 ```shell
 cd taxi-dermistes-common
 npm link
-npm install
 cd ../taxi-dermistes-core
-npm link taxi-dermistes-common
 npm install
 cd ../taxi-dermistes-web
 npm install

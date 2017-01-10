@@ -5,6 +5,7 @@
   "author": "Florian Choiselle, Christopher Goodman",
   "private": true,
   "scripts": {
+  "postinstall":"npm link taxi-dermistes-common",
     "start": "node ./app.js",
     "start:watch": "nodemon app.js",
     "test": "npm run lint",
