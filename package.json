@@ -11,4 +11,26 @@
   "test3": "cd taxi-dermistes-web && npm run test",
   "test4": "cd taxi-dermistes-desktop && npm run test"
   }
+  "dependencies": {
+    "async": "2.1.4",
+    "body-parser": "1.15.2",
+    "bootstrap": "3.3.7",
+    "express": "4.14.0",
+    "express-http-proxy": "0.10.0",
+    "jquery": "3.1.1",
+    "morgan": "1.7.0",
+    "nunjucks": "3.0.0",
+    "tracer": "0.8.7",
+    "validator": "6.2.0"
+  },
+  "devDependencies": {
+    "bluebird": "3.4.6",
+    "browser-sync": "2.18.5",
+    "browserify": "13.1.1",
+    "eslint": "3.12.2",
+    "eslint-config-usecases": "1.1.0",
+    "gulp": "3.9.1",
+    "gulp-nunjucks-render": "2.0.0",
+    "nodemon": "1.11.0"
+  }
 }
