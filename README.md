@@ -2,19 +2,11 @@
 # Gestion de taxis
 
 ## Requirements
-npm version 4.5.0
+node version 4.5.0
 
 ## Install
 Go to the root folder and run :
 ```shell
-cd taxi-dermistes-common
-npm link
-cd ../taxi-dermistes-core
-npm install
-cd ../taxi-dermistes-web
-npm install
-npm run build
-cd ../taxi-dermistes-desktop
 npm install
 ```
 
